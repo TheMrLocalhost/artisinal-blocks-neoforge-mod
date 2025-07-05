@@ -7,9 +7,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class ModItems {
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ArtisanalBlocks.MOD_ID);
@@ -22,11 +19,6 @@ public class ModItems {
             .stacksTo(1));
     public static final DeferredItem<Item> CLEANING_CLOTH = registerItem("cleaning_cloth", new Item.Properties()
             .stacksTo(1));
-
-    public static final List<DeferredItem<Item>> ARTISANALBLOCKS_ITEM_LIST = Arrays.asList(
-            ARTIST_PALETTE,
-            PAINTBRUSH,
-            CLEANING_CLOTH);
 
     private static DeferredItem<Item> registerItem(String name, Item.Properties itemProperties) {
         return ITEMS.registerItem(name, Item::new, itemProperties);

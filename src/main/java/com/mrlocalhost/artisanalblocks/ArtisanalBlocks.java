@@ -1,5 +1,6 @@
 package com.mrlocalhost.artisanalblocks;
 
+import com.mrlocalhost.artisanalblocks.block.ModBlocks;
 import com.mrlocalhost.artisanalblocks.item.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
 import org.slf4j.Logger;
@@ -19,8 +20,6 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
-import static com.mrlocalhost.artisanalblocks.item.ModItems.ARTISANALBLOCKS_ITEM_LIST;
-
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(ArtisanalBlocks.MOD_ID)
 public class ArtisanalBlocks {
@@ -34,6 +33,7 @@ public class ArtisanalBlocks {
         modEventBus.addListener(this::commonSetup);
         NeoForge.EVENT_BUS.register(this);
         ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
         modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
@@ -45,7 +45,12 @@ public class ArtisanalBlocks {
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if(event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
-            ARTISANALBLOCKS_ITEM_LIST.forEach(event::accept); //iterate over item list and add to creative tab
+            event.accept(ModItems.ARTIST_PALETTE);
+            event.accept(ModItems.PAINTBRUSH);
+            event.accept(ModItems.CLEANING_CLOTH);
+        }
+        if(event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
+            event.accept(ModBlocks.ARTISANAL_BLOCK);
         }
     }
 
