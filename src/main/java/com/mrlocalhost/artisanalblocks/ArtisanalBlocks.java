@@ -1,6 +1,7 @@
 package com.mrlocalhost.artisanalblocks;
 
 import com.mrlocalhost.artisanalblocks.block.ModBlocks;
+import com.mrlocalhost.artisanalblocks.item.ModCreativeModeTabs;
 import com.mrlocalhost.artisanalblocks.item.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
 import org.slf4j.Logger;
@@ -32,26 +33,14 @@ public class ArtisanalBlocks {
     public ArtisanalBlocks(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
         NeoForge.EVENT_BUS.register(this);
+        ModCreativeModeTabs.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
-        modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
 
-    }
-
-    // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if(event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
-            event.accept(ModItems.ARTIST_PALETTE);
-            event.accept(ModItems.PAINTBRUSH);
-            event.accept(ModItems.CLEANING_CLOTH);
-        }
-        if(event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            event.accept(ModBlocks.ARTISANAL_BLOCK);
-        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
