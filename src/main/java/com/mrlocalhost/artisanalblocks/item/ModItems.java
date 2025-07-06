@@ -6,23 +6,23 @@ import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import com.mrlocalhost.artisanalblocks.item.custom.CleaningClothItem;
 
 public class ModItems {
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ArtisanalBlocks.MOD_ID);
 
-    public static final DeferredItem<Item> ARTIST_PALETTE = registerItem("artist_palette", new Item.Properties()
+    public static final DeferredItem<Item> ARTIST_PALETTE =
+        ITEMS.registerItem("artist_palette", Item::new, new Item.Properties()
             .stacksTo(1)
             .durability(ArtisanalBlocksConstants.MAX_PALETTE_DAMAGE)
             .fireResistant());
-    public static final DeferredItem<Item> PAINTBRUSH = registerItem("paintbrush", new Item.Properties()
+    public static final DeferredItem<Item> PAINTBRUSH =
+        ITEMS.registerItem("paintbrush", Item::new, new Item.Properties()
             .stacksTo(1));
-    public static final DeferredItem<Item> CLEANING_CLOTH = registerItem("cleaning_cloth", new Item.Properties()
+    public static final DeferredItem<Item> CLEANING_CLOTH =
+        ITEMS.registerItem("cleaning_cloth", CleaningClothItem::new, new Item.Properties()
             .stacksTo(1));
-
-    private static DeferredItem<Item> registerItem(String name, Item.Properties itemProperties) {
-        return ITEMS.registerItem(name, Item::new, itemProperties);
-    }
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

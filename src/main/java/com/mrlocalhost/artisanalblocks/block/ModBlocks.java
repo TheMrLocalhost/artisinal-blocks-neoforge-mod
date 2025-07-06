@@ -1,6 +1,7 @@
 package com.mrlocalhost.artisanalblocks.block;
 
 import com.mrlocalhost.artisanalblocks.ArtisanalBlocks;
+import com.mrlocalhost.artisanalblocks.block.custom.ArtisanalBlock;
 import com.mrlocalhost.artisanalblocks.item.ModItems;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -15,8 +16,8 @@ public class ModBlocks {
 
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ArtisanalBlocks.MOD_ID);
 
-    public static final DeferredBlock<Block> ARTISANAL_BLOCK = registerBlock(
-            "artisanal_block", Block::new,
+    public static final DeferredBlock<ArtisanalBlock> ARTISANAL_BLOCK = registerBlock(
+            "artisanal_block", ArtisanalBlock::new,
             BlockBehaviour.Properties.of()
                     .strength(0.025F)
                     .sound(SoundType.WOOD));

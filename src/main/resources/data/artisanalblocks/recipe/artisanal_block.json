@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "artisanalblocks",
+  "category": "misc",
+  "ingredients": [
+    ["minecraft:sand"],
+    ["minecraft:gravel"],
+    ["minecraft:bone_meal"],
+    ["minecraft:clay_ball"]
+  ],
+  "result": {
+    "id": "artisanalblocks:artisanal_block",
+    "count": 4
+  }
+}

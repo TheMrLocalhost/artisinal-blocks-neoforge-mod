@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "artisanalblocks",
+  "category": "misc",
+  "key": {
+    "P": "#minecraft:wooden_pressure_plates"
+  },
+  "pattern": [
+    "PPP",
+    "PPP",
+    "PPP"
+  ],
+  "result": {
+    "id": "artisanalblocks:artist_palette",
+    "count": 1
+  }
+}

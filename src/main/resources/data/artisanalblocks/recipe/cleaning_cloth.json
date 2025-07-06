@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "artisanalblocks",
+  "category": "misc",
+  "key": {
+    "P": "minecraft:paper",
+    "W": "#minecraft:wool"
+  },
+  "pattern": [
+    "PPP",
+    "PWP",
+    "PPP"
+  ],
+  "result": {
+    "id": "artisanalblocks:cleaning_cloth"
+  }
+}
