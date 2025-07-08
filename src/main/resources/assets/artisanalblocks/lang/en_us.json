@@ -2,6 +2,11 @@
   "item.artisanalblocks.artist_palette": "Artist Palette",
   "item.artisanalblocks.paintbrush": "Paintbrush",
   "item.artisanalblocks.cleaning_cloth": "Cleaning Cloth",
+
   "block.artisanalblocks.artisanal_block": "Artisanal Block",
-  "creativetab.artisanalblocks.name": "Artisanal Blocks"
+
+  "creativetab.artisanalblocks.name": "Artisanal Blocks",
+
+  "tooltip.artisanalblocks.cleaning_cloth_item.shift_down": "Used to revert an Artisanal%sBlock to its base block",
+  "tooltip.artisanalblocks.cleaning_cloth_item": "Press shift for more info"
 }
