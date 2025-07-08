@@ -20,7 +20,8 @@ public class ModBlocks {
             "artisanal_block", ArtisanalBlock::new,
             BlockBehaviour.Properties.of()
                     .strength(0.025F)
-                    .sound(SoundType.WOOD));
+                    .sound(SoundType.WOOD)
+                    .lightLevel(state -> state.getValue(ArtisanalBlock.GLOW)));
 
     private static <B extends Block> DeferredBlock<B> registerBlock(String name, Function<BlockBehaviour.Properties, ? extends B> blockFactory, BlockBehaviour.Properties blockProperties) {
         DeferredBlock<B> block = BLOCKS.registerBlock(name, blockFactory, blockProperties);
