@@ -1,6 +1,8 @@
 package com.mrlocalhost.artisanalblocks;
 
 import com.mrlocalhost.artisanalblocks.block.ModBlocks;
+import com.mrlocalhost.artisanalblocks.block.entity.ModBlockEntities;
+import com.mrlocalhost.artisanalblocks.component.ModDataComponents;
 import com.mrlocalhost.artisanalblocks.item.ModCreativeModeTabs;
 import com.mrlocalhost.artisanalblocks.item.ModItems;
 import org.slf4j.Logger;
@@ -34,6 +36,8 @@ public class ArtisanalBlocks {
         ModCreativeModeTabs.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModDataComponents.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
