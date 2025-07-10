@@ -2,11 +2,23 @@
   "item.artisanalblocks.artist_palette": "Artist Palette",
   "item.artisanalblocks.paintbrush": "Paintbrush",
   "item.artisanalblocks.cleaning_cloth": "Cleaning Cloth",
+  "item.artisanalblocks.player_passage_dust": "Player Passage Dust",
+  "item.artisanalblocks.passive_passage_dust": "Passive Passage Dust",
+  "item.artisanalblocks.hostile_passage_dust": "Hostile Passage Dust",
 
   "block.artisanalblocks.artisanal_block": "Artisanal Block",
 
   "creativetab.artisanalblocks.name": "Artisanal Blocks",
 
   "tooltip.artisanalblocks.cleaning_cloth_item.shift_down": "Used to revert an Artisanal%sBlock to its base block",
-  "tooltip.artisanalblocks.cleaning_cloth_item": "Press shift for more info"
+  "tooltip.artisanalblocks.cleaning_cloth_item": "Press shift for more info",
+
+  "tooltip.artisanalblocks.player_passage_dust.shift_down": "Used on an artisanal block%sto toggle player passibility",
+  "tooltip.artisanalblocks.player_passage_dust": "Press shift for more info",
+
+  "tooltip.artisanalblocks.passive_passage_dust.shift_down": "Used on an artisanal block%sto toggle passive mob passibility",
+  "tooltip.artisanalblocks.passive_passage_dust": "Press shift for more info",
+
+  "tooltip.artisanalblocks.hostile_passage_dust.shift_down": "Used on an artisanal block%sto toggle hostile mob passibility",
+  "tooltip.artisanalblocks.hostile_passage_dust": "Press shift for more info"
 }

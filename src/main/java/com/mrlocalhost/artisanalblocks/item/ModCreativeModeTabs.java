@@ -24,6 +24,10 @@ public class ModCreativeModeTabs {
                             output.accept(ModItems.ARTIST_PALETTE);
                             output.accept(ModItems.PAINTBRUSH);
                             output.accept(ModItems.CLEANING_CLOTH);
+                            output.accept(ModItems.PLAYER_PASSAGE_DUST);
+                            output.accept(ModItems.PASSIVE_PASSAGE_DUST);
+                            output.accept(ModItems.HOSTILE_PASSAGE_DUST);
+
                             output.accept(ModBlocks.ARTISANAL_BLOCK);
                         })
                     .build());

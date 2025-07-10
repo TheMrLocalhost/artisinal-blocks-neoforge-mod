@@ -33,6 +33,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class ArtisanalBlock extends BaseEntityBlock {
 
     public static final IntegerProperty GLOW = IntegerProperty.create("glow", 0, 15);
@@ -123,7 +125,10 @@ public class ArtisanalBlock extends BaseEntityBlock {
             if (entity != null) {
                 boolean isPlayer = entity instanceof Player;
                 boolean isMonster = entity.getType().getCategory().equals(MobCategory.MONSTER);
-                boolean isPassive = entity.getType().getCategory().equals(MobCategory.CREATURE);
+                boolean isPassive = List.of(
+                    MobCategory.CREATURE,
+                    MobCategory.AXOLOTLS
+                ).contains(entity.getType().getCategory());
 
                 if (entity instanceof FallingBlockEntity
                     || (isPlayer && blockState.getValue(PLAYER_PASSIBLE))
