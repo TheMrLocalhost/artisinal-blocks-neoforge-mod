@@ -2,9 +2,11 @@ package com.mrlocalhost.artisanalblocks;
 
 import com.mrlocalhost.artisanalblocks.block.ModBlocks;
 import com.mrlocalhost.artisanalblocks.block.entity.ModBlockEntities;
+import com.mrlocalhost.artisanalblocks.block.entity.renderer.ArtisanalBlockEntityRenderer;
 import com.mrlocalhost.artisanalblocks.component.ModDataComponents;
 import com.mrlocalhost.artisanalblocks.item.ModCreativeModeTabs;
 import com.mrlocalhost.artisanalblocks.item.ModItems;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -57,6 +59,11 @@ public class ArtisanalBlocks {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
 
+        }
+
+        @SubscribeEvent
+        public static void registerBER(EntityRenderersEvent.RegisterRenderers event) {
+            event.registerBlockEntityRenderer(ModBlockEntities.ARTISANAL_BLOCK_BE.get(), ArtisanalBlockEntityRenderer::new);
         }
     }
 }

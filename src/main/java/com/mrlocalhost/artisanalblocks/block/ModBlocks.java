@@ -19,7 +19,7 @@ public class ModBlocks {
     public static final DeferredBlock<ArtisanalBlock> ARTISANAL_BLOCK = registerBlock(
             "artisanal_block", ArtisanalBlock::new,
             BlockBehaviour.Properties.of()
-                    .strength(0.025F)
+                    .strength(0.5F)
                     .sound(SoundType.WOOD)
                     .lightLevel(state -> state.getValue(ArtisanalBlock.GLOW)));
 
