@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "group": "artisanalblocks",
+  "group": "artisanalblocks_artist_palette",
   "category": "misc",
   "key": {
     "P": "#minecraft:wooden_pressure_plates"

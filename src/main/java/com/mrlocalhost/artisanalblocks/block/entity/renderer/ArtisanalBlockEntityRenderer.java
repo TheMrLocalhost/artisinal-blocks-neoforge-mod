@@ -92,9 +92,9 @@ public class ArtisanalBlockEntityRenderer implements BlockEntityRenderer<Artisan
 
     private Vec3 getFaceScale(Direction direction) {
         return switch (direction) {
-            case DOWN, UP -> new Vec3(2.0, 0.01, 2.0);
-            case NORTH, SOUTH -> new Vec3(2.0, 2.0, 0.01);
-            case WEST, EAST -> new Vec3(0.01, 2.0, 2.0);
+            case DOWN, UP -> new Vec3(1.999, 0.001, 1.999);
+            case NORTH, SOUTH -> new Vec3(1.999, 1.999, 0.001);
+            case WEST, EAST -> new Vec3(0.001, 1.999, 1.999);
         };
     }
 

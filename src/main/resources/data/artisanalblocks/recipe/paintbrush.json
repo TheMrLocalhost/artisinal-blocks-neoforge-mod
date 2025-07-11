@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "group": "artisanalblocks",
+  "group": "artisanalblocks_paintbrush",
   "category": "misc",
   "key": {
     "S": "minecraft:stick",

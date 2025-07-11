@@ -85,7 +85,6 @@ public class ArtisanalBlock extends BaseEntityBlock {
             @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
             @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof ArtisanalBlockEntity artisanalBlockEntity) {
-
             //light level raise
             if (player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.GLOWSTONE_DUST) && !level.isClientSide()) {
                 level.setBlockAndUpdate(pos, artisanalBlockEntity.getBlockState().setValue(GLOW, Integer.min(artisanalBlockEntity.getBlockState().getValue(GLOW) + 1, 15)));
@@ -99,7 +98,13 @@ public class ArtisanalBlock extends BaseEntityBlock {
                 level.setBlockAndUpdate(pos, artisanalBlockEntity.getBlockState().setValue(GLOW,Integer.max(artisanalBlockEntity.getBlockState().getValue(GLOW)-1,0)));
                 return InteractionResult.SUCCESS;
             }
-            if (hand.equals(InteractionHand.OFF_HAND) || level.isClientSide() || (!stack.isEmpty() && !(stack.getItem() instanceof BlockItem))) {
+            boolean allowedItem = false;
+            if (stack.getItem() instanceof BlockItem blockItem) {
+                allowedItem = !(blockItem.getBlock() instanceof BaseEntityBlock);
+            }
+            //TODO add logic to detect if item is an abnormal block shape (like a door, button, etc) and prevent use
+
+            if (hand.equals(InteractionHand.OFF_HAND) || level.isClientSide() || (!stack.isEmpty() && !allowedItem)) {
                 return InteractionResult.SUCCESS;
             }
             Direction side = hitResult.getDirection();

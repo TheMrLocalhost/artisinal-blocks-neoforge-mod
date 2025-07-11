@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "artisanalblocks_player_passage_dust",
+  "category": "misc",
+  "key": {
+    "E": "minecraft:ender_pearl",
+    "D": "minecraft:diamond_block",
+    "B": "#minecraft:beds"
+  },
+  "pattern": [
+    "BEB",
+    "EDE",
+    "BEB"
+  ],
+  "result": {
+    "id": "artisanalblocks:player_passage_dust"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "group": "artisanalblocks",
+  "group": "artisanalblocks_artisanal_block",
   "category": "misc",
   "ingredients": [
     ["minecraft:sand"],

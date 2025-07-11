@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "artisanalblocks_hostile_passage_dust",
+  "category": "misc",
+  "key": {
+    "E": "minecraft:ender_pearl",
+    "D": "minecraft:diamond_block",
+    "G": "minecraft:gunpowder",
+    "Z": "minecraft:rotten_flesh",
+    "B": "minecraft:bone",
+    "S": "minecraft:spider_eye"
+  },
+  "pattern": [
+    "GEZ",
+    "EDE",
+    "BES"
+  ],
+  "result": {
+    "id": "artisanalblocks:hostile_passage_dust"
+  }
+}
