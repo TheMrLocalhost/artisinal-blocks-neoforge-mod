@@ -5,20 +5,33 @@
   "item.artisanalblocks.player_passage_dust": "Player Passage Dust",
   "item.artisanalblocks.passive_passage_dust": "Passive Passage Dust",
   "item.artisanalblocks.hostile_passage_dust": "Hostile Passage Dust",
+  "item.artisanalblocks.artisanal_chisel": "Artisanal Chisel",
+
+  "gui.artisanalblocks.artisanal_block.display_name": "Artisanal Block",
 
   "block.artisanalblocks.artisanal_block": "Artisanal Block",
 
   "creativetab.artisanalblocks.name": "Artisanal Blocks",
 
-  "tooltip.artisanalblocks.cleaning_cloth_item.shift_down": "Used to revert an Artisanal%sBlock to its base block",
+  "tooltip.artisanalblocks.cleaning_cloth_item.shift_down_1": "Used to revert an Artisanal",
+  "tooltip.artisanalblocks.cleaning_cloth_item.shift_down_2": "Block to its base block",
   "tooltip.artisanalblocks.cleaning_cloth_item": "Press shift for more info",
 
-  "tooltip.artisanalblocks.player_passage_dust.shift_down": "Used on an artisanal block%sto toggle player passibility",
-  "tooltip.artisanalblocks.player_passage_dust": "Press shift for more info",
+  "tooltip.artisanalblocks.player_passage_dust_item.shift_down_1": "Used on an artisanal block",
+  "tooltip.artisanalblocks.player_passage_dust_item.shift_down_2": "to toggle player passibility",
+  "tooltip.artisanalblocks.player_passage_dust_item": "Press shift for more info",
 
-  "tooltip.artisanalblocks.passive_passage_dust.shift_down": "Used on an artisanal block%sto toggle passive mob passibility",
-  "tooltip.artisanalblocks.passive_passage_dust": "Press shift for more info",
+  "tooltip.artisanalblocks.passive_passage_dust_item.shift_down_1": "Used on an artisanal block",
+  "tooltip.artisanalblocks.passive_passage_dust_item.shift_down_2": "to toggle passive mob passibility",
+  "tooltip.artisanalblocks.passive_passage_dust_item": "Press shift for more info",
 
-  "tooltip.artisanalblocks.hostile_passage_dust.shift_down": "Used on an artisanal block%sto toggle hostile mob passibility",
-  "tooltip.artisanalblocks.hostile_passage_dust": "Press shift for more info"
+  "tooltip.artisanalblocks.hostile_passage_dust_item.shift_down_1": "Used on an artisanal block",
+  "tooltip.artisanalblocks.hostile_passage_dust_item.shift_down_2": "to toggle hostile mob passibility",
+  "tooltip.artisanalblocks.hostile_passage_dust_item": "Press shift for more info",
+
+  "tooltip.artisanalblocks.artisanal_chisel_item.shift_down_1": "Used on an artisanal block",
+  "tooltip.artisanalblocks.artisanal_chisel_item.shift_down_2": "to edit all attributes",
+  "tooltip.artisanalblocks.artisanal_chisel_item": "Press shift for more info"
+
+
 }

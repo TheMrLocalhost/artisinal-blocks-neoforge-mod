@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "artisanalblocks_artisanal_chisel",
+  "category": "misc",
+  "key": {
+    "N": "minecraft:netherite_block",
+    "D": "minecraft:diamond_block",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "DN",
+    "SD"
+  ],
+  "result": {
+    "id": "artisanalblocks:artisanal_chisel"
+  }
+}

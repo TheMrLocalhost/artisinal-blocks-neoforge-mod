@@ -1,7 +1,9 @@
 package com.mrlocalhost.artisanalblocks.block.custom;
 
 import com.mojang.serialization.MapCodec;
+import com.mrlocalhost.artisanalblocks.block.ModBlocks;
 import com.mrlocalhost.artisanalblocks.block.entity.ArtisanalBlockEntity;
+import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlocksUtilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -12,7 +14,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
@@ -85,37 +86,43 @@ public class ArtisanalBlock extends BaseEntityBlock {
             @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
             @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof ArtisanalBlockEntity artisanalBlockEntity) {
+
             //light level raise
             if (player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.GLOWSTONE_DUST) && !level.isClientSide()) {
                 level.setBlockAndUpdate(pos, artisanalBlockEntity.getBlockState().setValue(GLOW, Integer.min(artisanalBlockEntity.getBlockState().getValue(GLOW) + 1, 15)));
                 return InteractionResult.SUCCESS;//light level modification
-            //player passibility modification
-            } else if (player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.ENDER_PEARL) && !level.isClientSide()) {
-                level.setBlockAndUpdate(pos, artisanalBlockEntity.getBlockState().setValue(PLAYER_PASSIBLE,!artisanalBlockEntity.getBlockState().getValue(PLAYER_PASSIBLE)));
-                return InteractionResult.SUCCESS;
             //light level lower
             } else if (player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !level.isClientSide() && player.isCrouching()) {
                 level.setBlockAndUpdate(pos, artisanalBlockEntity.getBlockState().setValue(GLOW,Integer.max(artisanalBlockEntity.getBlockState().getValue(GLOW)-1,0)));
                 return InteractionResult.SUCCESS;
             }
-            boolean allowedItem = false;
-            if (stack.getItem() instanceof BlockItem blockItem) {
-                allowedItem = !(blockItem.getBlock() instanceof BaseEntityBlock);
-            }
-            //TODO add logic to detect if item is an abnormal block shape (like a door, button, etc) and prevent use
 
-            if (hand.equals(InteractionHand.OFF_HAND) || level.isClientSide() || (!stack.isEmpty() && !allowedItem)) {
-                return InteractionResult.SUCCESS;
+            if (hand.equals(InteractionHand.OFF_HAND) || level.isClientSide() || (!stack.isEmpty() && (!ArtisanalBlocksUtilities.isPlacableInArtisanalBlock(stack)) && !stack.getItem().equals(ModBlocks.ARTISANAL_BLOCK.asItem()))) {
+                if (level.isClientSide()) {
+                    return InteractionResult.SUCCESS;
+                }
+                return InteractionResult.PASS;
             }
             Direction side = hitResult.getDirection();
             int slot = side.get3DDataValue();
+
+            //This conditional block could definitely be simplified, but I cannot be bothered
             if(!stack.isEmpty() && !player.isCrouching()) { //hand has a block
-                artisanalBlockEntity.clearSlot(slot); //empty slot before attempting to fill it
-                artisanalBlockEntity.inventory.insertItem(slot, stack.copy(), false);
-                level.playSound(player, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1f, 2f);
+                if (!stack.getItem().equals(ModBlocks.ARTISANAL_BLOCK.asItem())) {
+                    artisanalBlockEntity.clearSlot(slot); //empty slot before attempting to fill it
+                    ItemStack itemCopy = stack.copy();
+                    itemCopy.setCount(1);
+                    artisanalBlockEntity.inventory.insertItem(slot, itemCopy, false);
+                    player.playNotifySound(SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 2.0F);
+                } else if (!artisanalBlockEntity.inventory.getStackInSlot(slot).isEmpty()) {
+                    artisanalBlockEntity.clearSlot(slot); //empty slot before attempting to fill it
+                    player.playNotifySound(SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 1.0F);
+                }
             } else if (stack.isEmpty() && !player.isCrouching()) { //if hand is populated
-                artisanalBlockEntity.clearSlot(slot); //empty item from slot in block
-                level.playSound(player, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1f, 1f);
+                if (!artisanalBlockEntity.inventory.getStackInSlot(slot).isEmpty()) {
+                    artisanalBlockEntity.clearSlot(slot); //empty item from slot in block
+                    player.playNotifySound(SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 1.0F);
+                }
             }
             return InteractionResult.CONSUME; //prevent the block from being placed
         }

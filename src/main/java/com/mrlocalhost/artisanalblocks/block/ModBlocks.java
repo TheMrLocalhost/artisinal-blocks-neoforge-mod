@@ -21,8 +21,11 @@ public class ModBlocks {
             BlockBehaviour.Properties.of()
                     .strength(0.5F)
                     .sound(SoundType.WOOD)
-                    .lightLevel(state -> state.getValue(ArtisanalBlock.GLOW)));
+                    .lightLevel(state -> state.getValue(ArtisanalBlock.GLOW))
+                    .isSuffocating((state, getter, pos) -> false)
+            );
 
+    @SuppressWarnings("all") //suppress warning about 'name' being only one value ever
     private static <B extends Block> DeferredBlock<B> registerBlock(String name, Function<BlockBehaviour.Properties, ? extends B> blockFactory, BlockBehaviour.Properties blockProperties) {
         DeferredBlock<B> block = BLOCKS.registerBlock(name, blockFactory, blockProperties);
         registerBlockItem(name, block);

@@ -1,15 +1,12 @@
 package com.mrlocalhost.artisanalblocks.item;
 
 import com.mrlocalhost.artisanalblocks.ArtisanalBlocks;
+import com.mrlocalhost.artisanalblocks.item.custom.*;
 import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlocksConstants;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import com.mrlocalhost.artisanalblocks.item.custom.CleaningClothItem;
-import com.mrlocalhost.artisanalblocks.item.custom.PlayerPassageDust;
-import com.mrlocalhost.artisanalblocks.item.custom.PassivePassageDust;
-import com.mrlocalhost.artisanalblocks.item.custom.HostilePassageDust;
 
 public class ModItems {
 
@@ -27,13 +24,16 @@ public class ModItems {
         ITEMS.registerItem("cleaning_cloth", CleaningClothItem::new, new Item.Properties()
             .stacksTo(1));
     public static final DeferredItem<Item> PLAYER_PASSAGE_DUST =
-        ITEMS.registerItem("player_passage_dust", PlayerPassageDust::new, new Item.Properties()
+        ITEMS.registerItem("player_passage_dust", PlayerPassageDustItem::new, new Item.Properties()
             .stacksTo(1));
     public static final DeferredItem<Item> PASSIVE_PASSAGE_DUST =
-        ITEMS.registerItem("passive_passage_dust", PassivePassageDust::new, new Item.Properties()
+        ITEMS.registerItem("passive_passage_dust", PassivePassageDustItem::new, new Item.Properties()
             .stacksTo(1));
     public static final DeferredItem<Item> HOSTILE_PASSAGE_DUST =
-        ITEMS.registerItem("hostile_passage_dust", HostilePassageDust::new, new Item.Properties()
+        ITEMS.registerItem("hostile_passage_dust", HostilePassageDustItem::new, new Item.Properties()
+            .stacksTo(1));
+    public static final DeferredItem<Item> ARTISANAL_CHISEL =
+        ITEMS.registerItem("artisanal_chisel", ArtisanalChiselItem::new, new Item.Properties()
             .stacksTo(1));
 
     public static void register(IEventBus eventBus) {

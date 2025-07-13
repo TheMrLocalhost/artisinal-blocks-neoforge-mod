@@ -3,10 +3,12 @@ package com.mrlocalhost.artisanalblocks;
 import com.mrlocalhost.artisanalblocks.block.ModBlocks;
 import com.mrlocalhost.artisanalblocks.block.entity.ModBlockEntities;
 import com.mrlocalhost.artisanalblocks.block.entity.renderer.ArtisanalBlockEntityRenderer;
-import com.mrlocalhost.artisanalblocks.component.ModDataComponents;
 import com.mrlocalhost.artisanalblocks.item.ModCreativeModeTabs;
 import com.mrlocalhost.artisanalblocks.item.ModItems;
+import com.mrlocalhost.artisanalblocks.screen.ModMenuTypes;
+import com.mrlocalhost.artisanalblocks.screen.custom.ArtisanalBlockScreen;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -38,8 +40,9 @@ public class ArtisanalBlocks {
         ModCreativeModeTabs.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
-        ModDataComponents.register(modEventBus);
         ModBlockEntities.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
+
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
@@ -64,6 +67,11 @@ public class ArtisanalBlocks {
         @SubscribeEvent
         public static void registerBER(EntityRenderersEvent.RegisterRenderers event) {
             event.registerBlockEntityRenderer(ModBlockEntities.ARTISANAL_BLOCK_BE.get(), ArtisanalBlockEntityRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerScreens(RegisterMenuScreensEvent event) {
+            event.register(ModMenuTypes.ARTISANAL_BLOCK_MENU.get(), ArtisanalBlockScreen::new);
         }
     }
 }

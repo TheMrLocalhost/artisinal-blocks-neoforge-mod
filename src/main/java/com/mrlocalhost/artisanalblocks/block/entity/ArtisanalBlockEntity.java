@@ -1,12 +1,18 @@
 package com.mrlocalhost.artisanalblocks.block.entity;
 
+import com.mrlocalhost.artisanalblocks.screen.custom.ArtisanalBlockMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,7 +20,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ArtisanalBlockEntity extends BlockEntity {
+public class ArtisanalBlockEntity extends BlockEntity implements MenuProvider {
 
     public final ItemStackHandler inventory = new ItemStackHandler(6) {
         @Override
@@ -61,7 +67,19 @@ public class ArtisanalBlockEntity extends BlockEntity {
     @Override
     protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
         super.loadAdditional(tag, registries);
-        inventory.deserializeNBT(registries, tag.getCompound("inventory").get());
+        if (tag.getCompound("inventory").isPresent()) {
+            inventory.deserializeNBT(registries, tag.getCompound("inventory").get());
+        }
+    }
+
+    @Override
+    public @NotNull Component getDisplayName() {
+        return Component.translatable("gui.artisanalblocks.artisanal_block.display_name");
+    }
+
+    @Override
+    public @Nullable AbstractContainerMenu createMenu(int containerId, @NotNull Inventory playerInventory, @NotNull Player player) {
+        return new ArtisanalBlockMenu(containerId, playerInventory, this);
     }
 
     @Override
