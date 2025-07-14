@@ -5,6 +5,10 @@
   "item.artisanalblocks.player_passage_dust": "Player Passage Dust",
   "item.artisanalblocks.passive_passage_dust": "Passive Passage Dust",
   "item.artisanalblocks.hostile_passage_dust": "Hostile Passage Dust",
+  "item.artisanalblocks.player_passage_rod": "Player Passage Rod",
+  "item.artisanalblocks.passive_passage_rod": "Passive Passage Rod",
+  "item.artisanalblocks.hostile_passage_rod": "Hostile Passage Rod",
+  "item.artisanalblocks.lighting_rod": "Lighting Rod",
   "item.artisanalblocks.artisanal_chisel": "Artisanal Chisel",
 
   "gui.artisanalblocks.artisanal_block.display_name": "Artisanal Block",
@@ -17,21 +21,37 @@
   "tooltip.artisanalblocks.cleaning_cloth_item.shift_down_2": "Block to its base block",
   "tooltip.artisanalblocks.cleaning_cloth_item": "Press shift for more info",
 
-  "tooltip.artisanalblocks.player_passage_dust_item.shift_down_1": "Used on an artisanal block",
-  "tooltip.artisanalblocks.player_passage_dust_item.shift_down_2": "to toggle player passibility",
-  "tooltip.artisanalblocks.player_passage_dust_item": "Press shift for more info",
+  "tooltip.artisanalblocks.player_passage_rod_item.shift_down_1": "Used on an artisanal block",
+  "tooltip.artisanalblocks.player_passage_rod_item.shift_down_2": "to toggle player passibility",
+  "tooltip.artisanalblocks.player_passage_rod_item.shift_down_3": "Off (Right Click) On (Sneak Right Click)",
+  "tooltip.artisanalblocks.player_passage_rod_item": "Press shift for more info",
 
-  "tooltip.artisanalblocks.passive_passage_dust_item.shift_down_1": "Used on an artisanal block",
-  "tooltip.artisanalblocks.passive_passage_dust_item.shift_down_2": "to toggle passive mob passibility",
-  "tooltip.artisanalblocks.passive_passage_dust_item": "Press shift for more info",
+  "tooltip.artisanalblocks.passive_passage_rod_item.shift_down_1": "Used on an artisanal block",
+  "tooltip.artisanalblocks.passive_passage_rod_item.shift_down_2": "to toggle passive mob passibility",
+  "tooltip.artisanalblocks.passive_passage_rod_item.shift_down_3": "Off (Right Click) On (Sneak Right Click)",
+  "tooltip.artisanalblocks.passive_passage_rod_item": "Press shift for more info",
 
-  "tooltip.artisanalblocks.hostile_passage_dust_item.shift_down_1": "Used on an artisanal block",
-  "tooltip.artisanalblocks.hostile_passage_dust_item.shift_down_2": "to toggle hostile mob passibility",
-  "tooltip.artisanalblocks.hostile_passage_dust_item": "Press shift for more info",
+  "tooltip.artisanalblocks.hostile_passage_rod_item.shift_down_1": "Used on an artisanal block",
+  "tooltip.artisanalblocks.hostile_passage_rod_item.shift_down_2": "to toggle hostile mob passibility",
+  "tooltip.artisanalblocks.hostile_passage_rod_item.shift_down_3": "Off (Right Click) On (Sneak Right Click)",
+  "tooltip.artisanalblocks.hostile_passage_rod_item": "Press shift for more info",
+
+  "tooltip.artisanalblocks.lighting_rod_item.shift_down_1": "Used on an artisanal block",
+  "tooltip.artisanalblocks.lighting_rod_item.shift_down_2": "to increase/decrease light level",
+  "tooltip.artisanalblocks.lighting_rod_item.shift_down_3": "+ (Right Click) - (Sneak Right Click)",
+  "tooltip.artisanalblocks.lighting_rod_item": "Press shift for more info",
 
   "tooltip.artisanalblocks.artisanal_chisel_item.shift_down_1": "Used on an artisanal block",
   "tooltip.artisanalblocks.artisanal_chisel_item.shift_down_2": "to edit all attributes",
-  "tooltip.artisanalblocks.artisanal_chisel_item": "Press shift for more info"
+  "tooltip.artisanalblocks.artisanal_chisel_item": "Press shift for more info",
+
+  "client_message.pop_up.artisanalblocks.player_passible.true": "Block is passible to players",
+  "client_message.pop_up.artisanalblocks.player_passible.false": "Block is not passible to players",
+  "client_message.pop_up.artisanalblocks.passive_passible.true": "Block is passible to passive mobs",
+  "client_message.pop_up.artisanalblocks.passive_passible.false": "Block is not passible to passive mobs",
+  "client_message.pop_up.artisanalblocks.hostile_passible.true": "Block is passible to hostile mobs",
+  "client_message.pop_up.artisanalblocks.hostile_passible.false": "Block is not passible to hostile mobs",
+  "client_message.pop_up.artisanalblocks.light_level": "Block light level is "
 
 
 }

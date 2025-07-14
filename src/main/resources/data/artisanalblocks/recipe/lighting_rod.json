@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "artisanalblocks_lighting_rod",
+  "category": "misc",
+  "key": {
+    "S": "minecraft:stick",
+    "G": "minecraft:glowstone_dust",
+    "C": "minecraft:diamond"
+  },
+  "pattern": [
+    "CG",
+    "SC"
+  ],
+  "result": {
+    "id": "artisanalblocks:lighting_rod"
+  }
+}

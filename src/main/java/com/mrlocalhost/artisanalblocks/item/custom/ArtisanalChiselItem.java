@@ -51,10 +51,10 @@ public class ArtisanalChiselItem extends Item {
         if (level.getBlockEntity(blockPos) instanceof ArtisanalBlockEntity artisanalBlockEntity) {
             if (!level.isClientSide()) {
                 player.openMenu(
-                        new SimpleMenuProvider(
-                                artisanalBlockEntity,
-                                Component.translatable("gui.artisanalblocks.artisanal_block.display_name")),
-                        blockPos);
+                    new SimpleMenuProvider(
+                        artisanalBlockEntity,
+                        Component.translatable("gui.artisanalblocks.artisanal_block.display_name")),
+                    blockPos);
                 return InteractionResult.SUCCESS_SERVER;
             }
             return InteractionResult.SUCCESS_SERVER;

@@ -53,7 +53,6 @@ public class CleaningClothItem extends Item {
         if (!(level instanceof ServerLevel) || hand.equals(InteractionHand.OFF_HAND) || player == null) { // skip clientSide and off-hand
             return InteractionResult.PASS;
         }
-
         if (clickedBlock == ModBlocks.ARTISANAL_BLOCK.get() && player.isCrouching()) {
             level.setBlockAndUpdate(blockPos, ModBlocks.ARTISANAL_BLOCK.get().defaultBlockState());
             if (level.getBlockEntity(blockPos) instanceof ArtisanalBlockEntity artisanalBlockEntity) {

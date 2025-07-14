@@ -15,7 +15,6 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -87,16 +86,6 @@ public class ArtisanalBlock extends BaseEntityBlock {
             @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof ArtisanalBlockEntity artisanalBlockEntity) {
 
-            //light level raise
-            if (player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.GLOWSTONE_DUST) && !level.isClientSide()) {
-                level.setBlockAndUpdate(pos, artisanalBlockEntity.getBlockState().setValue(GLOW, Integer.min(artisanalBlockEntity.getBlockState().getValue(GLOW) + 1, 15)));
-                return InteractionResult.SUCCESS;//light level modification
-            //light level lower
-            } else if (player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !level.isClientSide() && player.isCrouching()) {
-                level.setBlockAndUpdate(pos, artisanalBlockEntity.getBlockState().setValue(GLOW,Integer.max(artisanalBlockEntity.getBlockState().getValue(GLOW)-1,0)));
-                return InteractionResult.SUCCESS;
-            }
-
             if (hand.equals(InteractionHand.OFF_HAND) || level.isClientSide() || (!stack.isEmpty() && (!ArtisanalBlocksUtilities.isPlacableInArtisanalBlock(stack)) && !stack.getItem().equals(ModBlocks.ARTISANAL_BLOCK.asItem()))) {
                 if (level.isClientSide()) {
                     return InteractionResult.SUCCESS;
@@ -113,15 +102,15 @@ public class ArtisanalBlock extends BaseEntityBlock {
                     ItemStack itemCopy = stack.copy();
                     itemCopy.setCount(1);
                     artisanalBlockEntity.inventory.insertItem(slot, itemCopy, false);
-                    player.playNotifySound(SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 2.0F);
+                    player.playNotifySound(SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.25F, 2.0F);
                 } else if (!artisanalBlockEntity.inventory.getStackInSlot(slot).isEmpty()) {
                     artisanalBlockEntity.clearSlot(slot); //empty slot before attempting to fill it
-                    player.playNotifySound(SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    player.playNotifySound(SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.25F, 1.0F);
                 }
             } else if (stack.isEmpty() && !player.isCrouching()) { //if hand is populated
                 if (!artisanalBlockEntity.inventory.getStackInSlot(slot).isEmpty()) {
                     artisanalBlockEntity.clearSlot(slot); //empty item from slot in block
-                    player.playNotifySound(SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    player.playNotifySound(SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.25F, 1.0F);
                 }
             }
             return InteractionResult.CONSUME; //prevent the block from being placed

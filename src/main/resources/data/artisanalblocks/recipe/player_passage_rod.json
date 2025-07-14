@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "artisanalblocks_player_passage_rod",
+  "category": "misc",
+  "key": {
+    "S": "minecraft:stick",
+    "D": "artisanalblocks:player_passage_dust",
+    "C": "minecraft:diamond"
+  },
+  "pattern": [
+    "CD",
+    "SC"
+  ],
+  "result": {
+    "id": "artisanalblocks:player_passage_rod"
+  }
+}
