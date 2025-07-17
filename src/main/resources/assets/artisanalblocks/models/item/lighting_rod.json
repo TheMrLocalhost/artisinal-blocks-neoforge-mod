@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "artisanalblocks:item/wand",
   "textures": {
     "layer0": "artisanalblocks:item/lighting_rod"
   }
