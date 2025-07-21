@@ -28,7 +28,7 @@ public class ArtisanalBlockEntityRenderer implements BlockEntityRenderer<Artisan
     }
 
     @Override
-    public void render(@NotNull ArtisanalBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay, @NotNull Vec3 cameraPos) {
+    public void render(@NotNull ArtisanalBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
         List<Direction> blockFaces = List.of(
@@ -49,7 +49,8 @@ public class ArtisanalBlockEntityRenderer implements BlockEntityRenderer<Artisan
             }
             if (blockEntity.getLevel() != null) {
                 poseStack.pushPose();
-                poseStack.translate(getFaceTranslation(direction)); //set translation based on face being rendered
+                Vec3 faceTranslations = getFaceTranslation(direction);
+                poseStack.translate(faceTranslations.x, faceTranslations.y, faceTranslations.z); //set translation based on face being rendered
                 Vec3 scales = getFaceScale(direction);
                 poseStack.scale((float) scales.x, (float) scales.y, (float) scales.z);
                 itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED,
@@ -97,5 +98,4 @@ public class ArtisanalBlockEntityRenderer implements BlockEntityRenderer<Artisan
             case WEST, EAST -> new Vec3(0.001, 1.999, 1.999);
         };
     }
-
 }

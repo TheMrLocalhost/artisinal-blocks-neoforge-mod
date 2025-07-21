@@ -15,8 +15,8 @@ public class ModBlockEntities {
             DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, ArtisanalBlocks.MOD_ID);
 
     public static final Supplier<BlockEntityType<ArtisanalBlockEntity>> ARTISANAL_BLOCK_BE =
-            BLOCK_ENTITIES.register("artisanal_block_be", () -> new BlockEntityType<>(
-                ArtisanalBlockEntity::new, ModBlocks.ARTISANAL_BLOCK.get()));
+        BLOCK_ENTITIES.register("artisanal_block_be", () -> BlockEntityType.Builder.of(
+            ArtisanalBlockEntity::new, ModBlocks.ARTISANAL_BLOCK.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);

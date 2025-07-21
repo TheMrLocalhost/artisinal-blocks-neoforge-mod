@@ -53,12 +53,6 @@ public class ArtisanalBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    public void preRemoveSideEffects(@NotNull BlockPos pos, @NotNull BlockState state) {
-        drops();
-        super.preRemoveSideEffects(pos, state);
-    }
-
-    @Override
     protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
         super.saveAdditional(tag, registries);
         tag.put("inventory", inventory.serializeNBT(registries));
@@ -67,8 +61,8 @@ public class ArtisanalBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
         super.loadAdditional(tag, registries);
-        if (tag.getCompound("inventory").isPresent()) {
-            inventory.deserializeNBT(registries, tag.getCompound("inventory").get());
+        if (tag.contains("inventory")) {
+            inventory.deserializeNBT(registries, tag.getCompound("inventory"));
         }
     }
 

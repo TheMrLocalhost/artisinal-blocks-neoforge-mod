@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.item.FallingBlockEntity;
@@ -80,7 +81,7 @@ public class ArtisanalBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected @NotNull InteractionResult useItemOn(
+    protected @NotNull ItemInteractionResult useItemOn(
             @NotNull ItemStack stack, @NotNull BlockState state,
             @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
             @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
@@ -88,9 +89,9 @@ public class ArtisanalBlock extends BaseEntityBlock {
 
             if (hand.equals(InteractionHand.OFF_HAND) || level.isClientSide() || (!stack.isEmpty() && (!ArtisanalBlocksUtilities.isPlacableInArtisanalBlock(stack)) && !stack.getItem().equals(ModBlocks.ARTISANAL_BLOCK.asItem()))) {
                 if (level.isClientSide()) {
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 }
-                return InteractionResult.PASS;
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             }
             Direction side = hitResult.getDirection();
             int slot = side.get3DDataValue();
@@ -113,15 +114,16 @@ public class ArtisanalBlock extends BaseEntityBlock {
                     player.playNotifySound(SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.25F, 1.0F);
                 }
             }
-            return InteractionResult.CONSUME; //prevent the block from being placed
+            return ItemInteractionResult.CONSUME; //prevent the block from being placed
         }
-        return InteractionResult.FAIL;
+        return ItemInteractionResult.FAIL;
 
     }
 
     @Override
     protected @NotNull VoxelShape getCollisionShape(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos blockPos, CollisionContext context) {
-        if (!context.isPlacement() && context instanceof EntityCollisionContext entitycollisioncontext) {
+        //TODO Check if broken without isPlacement check -- if (!context.isPlacement() && context instanceof EntityCollisionContext entitycollisioncontext) {
+        if (context instanceof EntityCollisionContext entitycollisioncontext) {
             Entity entity = entitycollisioncontext.getEntity();
             if (entity != null) {
                 boolean isPlayer = entity instanceof Player;

@@ -13,12 +13,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Consumer;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class ArtisanalChiselItem extends Item {
@@ -28,14 +26,13 @@ public class ArtisanalChiselItem extends Item {
     }
 
     @Override
-    public void appendHoverText(
-    @NotNull ItemStack stack, @NotNull Item.TooltipContext context, @NotNull TooltipDisplay tooltipDisplay,
-    @NotNull Consumer<Component> tooltipAdder, @NotNull TooltipFlag flag) {
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
+    @NotNull List<Component> tooltipAdder, @NotNull TooltipFlag tooltipFlag) {
         if (Screen.hasShiftDown()) {
-            tooltipAdder.accept(Component.translatable("tooltip.artisanalblocks.artisanal_chisel_item.shift_down_1").withStyle(ChatFormatting.AQUA));
-            tooltipAdder.accept(Component.translatable("tooltip.artisanalblocks.artisanal_chisel_item.shift_down_2").withStyle(ChatFormatting.AQUA));
+            tooltipAdder.add(Component.translatable("tooltip.artisanalblocks.artisanal_chisel_item.shift_down_1").withStyle(ChatFormatting.AQUA));
+            tooltipAdder.add(Component.translatable("tooltip.artisanalblocks.artisanal_chisel_item.shift_down_2").withStyle(ChatFormatting.AQUA));
         } else {
-            tooltipAdder.accept(Component.translatable("tooltip.artisanalblocks.artisanal_chisel_item").withStyle(ChatFormatting.YELLOW));
+            tooltipAdder.add(Component.translatable("tooltip.artisanalblocks.artisanal_chisel_item").withStyle(ChatFormatting.YELLOW));
         }
     }
 
@@ -55,9 +52,9 @@ public class ArtisanalChiselItem extends Item {
                         artisanalBlockEntity,
                         Component.translatable("gui.artisanalblocks.artisanal_block.display_name")),
                     blockPos);
-                return InteractionResult.SUCCESS_SERVER;
+                return InteractionResult.SUCCESS;
             }
-            return InteractionResult.SUCCESS_SERVER;
+            return InteractionResult.SUCCESS;
         } else {
             return super.onItemUseFirst(stack, context);
         }

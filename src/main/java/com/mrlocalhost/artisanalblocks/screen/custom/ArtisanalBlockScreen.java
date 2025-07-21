@@ -23,7 +23,7 @@ public class ArtisanalBlockScreen extends AbstractContainerScreen<ArtisanalBlock
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        guiGraphics.blit(RenderType.GUI_TEXTURED, GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
+        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
     }
 
     @Override

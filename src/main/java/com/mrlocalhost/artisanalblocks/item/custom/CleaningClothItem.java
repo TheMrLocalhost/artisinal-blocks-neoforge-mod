@@ -14,13 +14,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 import net.minecraft.core.BlockPos;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 @SuppressWarnings("deprecation")
@@ -31,14 +31,13 @@ public class CleaningClothItem extends Item {
     }
 
     @Override
-    public void appendHoverText(
-    @NotNull ItemStack stack, @NotNull Item.TooltipContext context, @NotNull TooltipDisplay tooltipDisplay,
-    @NotNull Consumer<Component> tooltipAdder, @NotNull TooltipFlag flag) {
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
+    @NotNull List<Component> tooltipAdder, @NotNull TooltipFlag tooltipFlag) {
         if (Screen.hasShiftDown()) {
-            tooltipAdder.accept(Component.translatable("tooltip.artisanalblocks.cleaning_cloth_item.shift_down_1").withStyle(ChatFormatting.AQUA));
-            tooltipAdder.accept(Component.translatable("tooltip.artisanalblocks.cleaning_cloth_item.shift_down_2").withStyle(ChatFormatting.AQUA));
+            tooltipAdder.add(Component.translatable("tooltip.artisanalblocks.cleaning_cloth_item.shift_down_1").withStyle(ChatFormatting.AQUA));
+            tooltipAdder.add(Component.translatable("tooltip.artisanalblocks.cleaning_cloth_item.shift_down_2").withStyle(ChatFormatting.AQUA));
         } else {
-            tooltipAdder.accept(Component.translatable("tooltip.artisanalblocks.cleaning_cloth_item").withStyle(ChatFormatting.YELLOW));
+            tooltipAdder.add(Component.translatable("tooltip.artisanalblocks.cleaning_cloth_item").withStyle(ChatFormatting.YELLOW));
         }
     }
 
@@ -62,7 +61,7 @@ public class CleaningClothItem extends Item {
         } else {
             return super.onItemUseFirst(stack, context);
         }
-        return InteractionResult.SUCCESS_SERVER;
+        return InteractionResult.SUCCESS;
     }
 
 }
