@@ -4,6 +4,7 @@ import com.mrlocalhost.artisanalblocks.block.ModBlocks;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.HalfTransparentBlock;
 
 
 public class ArtisanalBlocksUtilities {
@@ -17,6 +18,7 @@ public class ArtisanalBlocksUtilities {
             return (item.getItem() instanceof BlockItem blockItem)
                 && !(blockItem.getBlock() instanceof BaseEntityBlock)
                 && (blockItem.getBlock().defaultBlockState().isCollisionShapeFullBlock(null, null))
+                && !(blockItem.getBlock() instanceof HalfTransparentBlock)
             ;
         } catch (Exception ignored) {
             return false;
