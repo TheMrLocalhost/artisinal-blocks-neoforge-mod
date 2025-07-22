@@ -9,7 +9,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobCategory;
@@ -121,8 +120,7 @@ public class ArtisanalBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected @NotNull VoxelShape getCollisionShape(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos blockPos, CollisionContext context) {
-        //TODO Check if broken without isPlacement check -- if (!context.isPlacement() && context instanceof EntityCollisionContext entitycollisioncontext) {
+    protected @NotNull VoxelShape getCollisionShape(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos blockPos, @NotNull CollisionContext context) {
         if (context instanceof EntityCollisionContext entitycollisioncontext) {
             Entity entity = entitycollisioncontext.getEntity();
             if (entity != null) {
@@ -146,4 +144,8 @@ public class ArtisanalBlock extends BaseEntityBlock {
 
     }
 
+    @Override
+    protected boolean skipRendering(@NotNull BlockState state, BlockState adjacentBlockState, @NotNull Direction side) {
+        return adjacentBlockState.is(this) || super.skipRendering(state, adjacentBlockState, side);
+    }
 }

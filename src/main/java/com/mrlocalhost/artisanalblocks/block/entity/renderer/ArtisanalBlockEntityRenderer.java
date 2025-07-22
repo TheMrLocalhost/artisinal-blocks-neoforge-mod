@@ -2,6 +2,7 @@ package com.mrlocalhost.artisanalblocks.block.entity.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mrlocalhost.artisanalblocks.block.ModBlocks;
+import com.mrlocalhost.artisanalblocks.block.custom.ArtisanalBlock;
 import com.mrlocalhost.artisanalblocks.block.entity.ArtisanalBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
@@ -23,6 +24,7 @@ import java.util.List;
 
 public class ArtisanalBlockEntityRenderer implements BlockEntityRenderer<ArtisanalBlockEntity> {
 
+    @SuppressWarnings("unused")
     public ArtisanalBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 
     }
@@ -47,16 +49,21 @@ public class ArtisanalBlockEntityRenderer implements BlockEntityRenderer<Artisan
             if (stack.isEmpty()) {
                 stack = ModBlocks.ARTISANAL_BLOCK.toStack();
             }
+
             if (blockEntity.getLevel() != null) {
-                poseStack.pushPose();
-                Vec3 faceTranslations = getFaceTranslation(direction);
-                poseStack.translate(faceTranslations.x, faceTranslations.y, faceTranslations.z); //set translation based on face being rendered
-                Vec3 scales = getFaceScale(direction);
-                poseStack.scale((float) scales.x, (float) scales.y, (float) scales.z);
-                itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED,
-                    getLightLevel(blockEntity.getLevel(), getRelativePosition(blockEntity.getBlockPos(), direction)),
-                    OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 1);
-                poseStack.popPose();
+                BlockPos sidePos = getRelativePosition(blockEntity.getBlockPos(), direction);
+                if (!(blockEntity.getLevel().getBlockState(sidePos).getBlock() instanceof ArtisanalBlock)) {
+                    poseStack.pushPose();
+                    Vec3 faceTranslations = getFaceTranslation(direction);
+                    poseStack.translate(faceTranslations.x, faceTranslations.y, faceTranslations.z); //set translation based on face being rendered
+                    Vec3 scales = getFaceScale(direction);
+                    poseStack.scale((float) scales.x, (float) scales.y, (float) scales.z);
+
+                    itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED,
+                            getLightLevel(blockEntity.getLevel(), sidePos),
+                            OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 1);
+                    poseStack.popPose();
+                }
             }
         });
 
