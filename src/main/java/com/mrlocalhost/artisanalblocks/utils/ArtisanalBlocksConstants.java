@@ -1,19 +1,32 @@
 package com.mrlocalhost.artisanalblocks.utils;
 
 import net.minecraft.core.Direction;
-import java.util.Map;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
 
 public class ArtisanalBlocksConstants {
 
     public static final int MAX_PALETTE_DAMAGE = 512;
 
-    public static final Map<Integer, Direction> BLOCK_FACE_POS = Map.of(
-        Direction.DOWN.get3DDataValue(), Direction.DOWN,
-        Direction.UP.get3DDataValue(), Direction.UP,
-        Direction.NORTH.get3DDataValue(), Direction.NORTH,
-        Direction.SOUTH.get3DDataValue(), Direction.SOUTH,
-        Direction.WEST.get3DDataValue(), Direction.WEST,
-        Direction.EAST.get3DDataValue(), Direction.EAST
+    public static final List<Direction> BLOCK_FACE_POS = List.of(
+        Direction.DOWN,
+        Direction.UP,
+        Direction.NORTH,
+        Direction.SOUTH,
+        Direction.WEST,
+        Direction.EAST
+    );
+
+    public static final List<Vec3> BLOCK_CORNERS = List.of(
+        new Vec3(0, 0, 0),
+        new Vec3(0, 0, 1),
+        new Vec3(0, 1, 0),
+        new Vec3(0, 1, 1),
+        new Vec3(1, 0, 0),
+        new Vec3(1, 0, 1),
+        new Vec3(1, 1, 0),
+        new Vec3(1, 1, 1)
     );
 
 }

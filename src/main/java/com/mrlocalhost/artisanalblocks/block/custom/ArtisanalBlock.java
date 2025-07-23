@@ -3,11 +3,17 @@ package com.mrlocalhost.artisanalblocks.block.custom;
 import com.mojang.serialization.MapCodec;
 import com.mrlocalhost.artisanalblocks.block.ModBlocks;
 import com.mrlocalhost.artisanalblocks.block.entity.ArtisanalBlockEntity;
+import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlockConfigs;
+import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlocksConstants;
 import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlocksUtilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -19,6 +25,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,6 +33,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -37,7 +45,8 @@ import java.util.List;
 
 public class ArtisanalBlock extends BaseEntityBlock {
 
-    public static final IntegerProperty GLOW = IntegerProperty.create("glow", 0, 15);
+    public static final BooleanProperty GLOW = BooleanProperty.create("glow");
+    public static final IntegerProperty GLOW_VALUE = IntegerProperty.create("glow_value", 0, 15);
     public static final BooleanProperty PLAYER_PASSIBLE = BooleanProperty.create("player_passible");
     public static final BooleanProperty HOSTILE_PASSIBLE = BooleanProperty.create("hostile_passible");
     public static final BooleanProperty PASSIVE_PASSIBLE = BooleanProperty.create("passive_passible");
@@ -47,10 +56,17 @@ public class ArtisanalBlock extends BaseEntityBlock {
     public ArtisanalBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState()
-            .setValue(GLOW, 0)
+            .setValue(GLOW, true)
+            .setValue(GLOW_VALUE, 0)
             .setValue(PLAYER_PASSIBLE, false)
             .setValue(HOSTILE_PASSIBLE, false)
-            .setValue(PASSIVE_PASSIBLE, false));
+            .setValue(PASSIVE_PASSIBLE, false)
+        );
+    }
+
+    @Override
+    protected void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState oldState, boolean movedByPiston) {
+        updateRedstoneStates(state, level, pos);
     }
 
     @Override
@@ -61,6 +77,7 @@ public class ArtisanalBlock extends BaseEntityBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(GLOW);
+        builder.add(GLOW_VALUE);
         builder.add(PLAYER_PASSIBLE);
         builder.add(HOSTILE_PASSIBLE);
         builder.add(PASSIVE_PASSIBLE);
@@ -107,6 +124,7 @@ public class ArtisanalBlock extends BaseEntityBlock {
                     artisanalBlockEntity.clearSlot(slot); //empty slot before attempting to fill it
                     player.playNotifySound(SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.25F, 1.0F);
                 }
+
             } else if (stack.isEmpty() && !player.isCrouching()) { //if hand is populated
                 if (!artisanalBlockEntity.inventory.getStackInSlot(slot).isEmpty()) {
                     artisanalBlockEntity.clearSlot(slot); //empty item from slot in block
@@ -147,5 +165,40 @@ public class ArtisanalBlock extends BaseEntityBlock {
     @Override
     protected boolean skipRendering(@NotNull BlockState state, BlockState adjacentBlockState, @NotNull Direction side) {
         return adjacentBlockState.is(this) || super.skipRendering(state, adjacentBlockState, side);
+    }
+
+    @Override
+    protected void neighborChanged(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Block block, @NotNull BlockPos fromPos, boolean isMoving) {
+        if (!level.isClientSide) {
+            updateRedstoneStates(state, level, pos);
+        }
+    }
+
+    @Override
+    public void animateTick(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        if (level.hasNeighborSignal(pos)) {
+            for (Vec3 corner: ArtisanalBlocksConstants.BLOCK_CORNERS) { //spawn a set of particles at each corner
+                level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.REDSTONE_BLOCK.defaultBlockState()),
+                    true,
+                    pos.getX() + corner.x,
+                    pos.getY() + corner.y,
+                    pos.getZ() + corner.z,
+                    0.0, 0.0, 0.0);
+            }
+        }
+    }
+
+    private void updateRedstoneStates(BlockState state, Level level, BlockPos pos) {
+        if (!(level instanceof ServerLevel serverLevel)) return;
+        if (level.getBlockEntity(pos) instanceof ArtisanalBlockEntity blockEntity) {
+            if (!blockEntity.blockConfig.getRedstoneOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.LIGHT).equals(ArtisanalBlockConfigs.REDSTONE_OPTIONS.IGNORED)) {
+                ArtisanalBlockConfigs.REDSTONE_OPTIONS lightConfig = blockEntity.blockConfig.getRedstoneOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.LIGHT);
+                serverLevel.setBlockAndUpdate(pos,
+                    state.setValue(GLOW,
+                    !level.hasNeighborSignal(pos)
+                        && lightConfig.equals(ArtisanalBlockConfigs.REDSTONE_OPTIONS.LOW))
+                );
+            }
+        }
     }
 }

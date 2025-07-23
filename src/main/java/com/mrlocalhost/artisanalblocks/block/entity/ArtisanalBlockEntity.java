@@ -1,6 +1,7 @@
 package com.mrlocalhost.artisanalblocks.block.entity;
 
 import com.mrlocalhost.artisanalblocks.screen.custom.ArtisanalBlockMenu;
+import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlockConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -37,6 +38,8 @@ public class ArtisanalBlockEntity extends BlockEntity implements MenuProvider {
         }
     };
 
+    public final ArtisanalBlockConfigs blockConfig = new ArtisanalBlockConfigs();
+
     public void clearSlot(int slot) {
         inventory.setStackInSlot(slot, ItemStack.EMPTY);
     }
@@ -56,6 +59,7 @@ public class ArtisanalBlockEntity extends BlockEntity implements MenuProvider {
     protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
         super.saveAdditional(tag, registries);
         tag.put("inventory", inventory.serializeNBT(registries));
+        tag.put("block_config", blockConfig.serializeNBT(registries));
     }
 
     @Override
@@ -63,6 +67,9 @@ public class ArtisanalBlockEntity extends BlockEntity implements MenuProvider {
         super.loadAdditional(tag, registries);
         if (tag.contains("inventory")) {
             inventory.deserializeNBT(registries, tag.getCompound("inventory"));
+        }
+        if (tag.contains("block_config")) {
+            blockConfig.deserializeNBT(registries, tag.getCompound("block_config"));
         }
     }
 

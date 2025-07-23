@@ -21,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-@SuppressWarnings("deprecation")
 public class LightingRodItem extends Item {
 
     public LightingRodItem(Properties properties) {
@@ -54,7 +53,7 @@ public class LightingRodItem extends Item {
         //Client-Side
         if (!(level instanceof ServerLevel)) {
             if (level.getBlockEntity(blockPos) instanceof ArtisanalBlockEntity artisanalBlockEntity) {
-                int currentLightValue = artisanalBlockEntity.getBlockState().getValue(ArtisanalBlock.GLOW);
+                int currentLightValue = artisanalBlockEntity.getBlockState().getValue(ArtisanalBlock.GLOW_VALUE);
                 int nextLightValue;
                 if (!player.isCrouching()) {
                     nextLightValue = Integer.min(15, currentLightValue+1);
@@ -74,11 +73,11 @@ public class LightingRodItem extends Item {
         if (level.getBlockEntity(blockPos) instanceof ArtisanalBlockEntity artisanalBlockEntity) {
             int value;
             if (!player.isCrouching()) {
-                value = Integer.min(artisanalBlockEntity.getBlockState().getValue(ArtisanalBlock.GLOW) + 1, 15);
+                value = Integer.min(artisanalBlockEntity.getBlockState().getValue(ArtisanalBlock.GLOW_VALUE) + 1, 15);
             } else {
-                value = Integer.max(artisanalBlockEntity.getBlockState().getValue(ArtisanalBlock.GLOW)-1,0);
+                value = Integer.max(artisanalBlockEntity.getBlockState().getValue(ArtisanalBlock.GLOW_VALUE)-1,0);
             }
-            level.setBlockAndUpdate(blockPos, artisanalBlockEntity.getBlockState().setValue(ArtisanalBlock.GLOW,value));
+            level.setBlockAndUpdate(blockPos, artisanalBlockEntity.getBlockState().setValue(ArtisanalBlock.GLOW_VALUE,value));
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.SUCCESS;

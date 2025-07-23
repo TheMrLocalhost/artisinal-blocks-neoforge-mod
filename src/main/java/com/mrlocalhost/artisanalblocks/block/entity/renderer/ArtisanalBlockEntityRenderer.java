@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mrlocalhost.artisanalblocks.block.ModBlocks;
 import com.mrlocalhost.artisanalblocks.block.custom.ArtisanalBlock;
 import com.mrlocalhost.artisanalblocks.block.entity.ArtisanalBlockEntity;
+import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlocksConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 
 public class ArtisanalBlockEntityRenderer implements BlockEntityRenderer<ArtisanalBlockEntity> {
 
@@ -33,18 +33,7 @@ public class ArtisanalBlockEntityRenderer implements BlockEntityRenderer<Artisan
     public void render(@NotNull ArtisanalBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
-        List<Direction> blockFaces = List.of(
-                Direction.DOWN,
-                Direction.UP,
-                Direction.NORTH,
-                Direction.SOUTH,
-                Direction.WEST,
-                Direction.EAST
-        );
-
-
-
-        blockFaces.forEach( direction -> {
+        ArtisanalBlocksConstants.BLOCK_FACE_POS.forEach(direction -> {
             ItemStack stack = blockEntity.inventory.getStackInSlot(direction.get3DDataValue());
             if (stack.isEmpty()) {
                 stack = ModBlocks.ARTISANAL_BLOCK.toStack();

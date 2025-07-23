@@ -21,7 +21,7 @@ public class ModBlocks {
             BlockBehaviour.Properties.of()
                     .strength(0.5F)
                     .sound(SoundType.WOOD)
-                    .lightLevel(state -> state.getValue(ArtisanalBlock.GLOW))
+                    .lightLevel(state -> state.getValue(ArtisanalBlock.GLOW) ? state.getValue(ArtisanalBlock.GLOW_VALUE) : 0)
                     .isSuffocating((state, getter, pos) -> false)
             );
 
