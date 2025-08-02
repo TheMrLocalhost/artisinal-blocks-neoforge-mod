@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 public record ArtisanalBlockNetworkData(BlockPos blockPos, int config, int value) implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<ArtisanalBlockNetworkData> TYPE =
-        new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID, "c2s_artisanal_block_packet"));
+        new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID, "artisanal_block_packet"));
 
     public static final StreamCodec<ByteBuf, ArtisanalBlockNetworkData> STREAM_CODEC = StreamCodec.composite(
             (StreamCodec<? super ByteBuf, BlockPos>) EntityDataSerializers.BLOCK_POS.codec(),

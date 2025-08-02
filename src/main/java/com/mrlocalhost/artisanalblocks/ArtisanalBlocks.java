@@ -13,7 +13,7 @@ import com.mrlocalhost.artisanalblocks.screen.custom.ArtisanalBlockScreen;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.handling.MainThreadPayloadHandler;
+import net.neoforged.neoforge.network.handling.DirectionalPayloadHandler;
 import net.neoforged.neoforge.network.registration.HandlerThread;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.slf4j.Logger;
@@ -71,10 +71,11 @@ public class ArtisanalBlocks {
         @SubscribeEvent // on the mod event bus
         public static void register(final RegisterPayloadHandlersEvent event) {
             final PayloadRegistrar registrar = event.registrar("1").executesOn(HandlerThread.MAIN);
-            registrar.playToServer(
+            registrar.playBidirectional(
                     ArtisanalBlockNetworkData.TYPE,
                     ArtisanalBlockNetworkData.STREAM_CODEC,
-                    new MainThreadPayloadHandler<>(
+                    new DirectionalPayloadHandler<>(
+                            ArtisanalBlockNetworkHandler::handleDataOnClient,
                             ArtisanalBlockNetworkHandler::handleDataOnMain
                     )
             );
@@ -93,10 +94,11 @@ public class ArtisanalBlocks {
         @SubscribeEvent // on the mod event bus
         public static void register(final RegisterPayloadHandlersEvent event) {
             final PayloadRegistrar registrar = event.registrar("1").executesOn(HandlerThread.MAIN);
-            registrar.playToServer(
+            registrar.playBidirectional(
                     ArtisanalBlockNetworkData.TYPE,
                     ArtisanalBlockNetworkData.STREAM_CODEC,
-                    new MainThreadPayloadHandler<>(
+                    new DirectionalPayloadHandler<>(
+                            ArtisanalBlockNetworkHandler::handleDataOnClient,
                             ArtisanalBlockNetworkHandler::handleDataOnMain
                     )
             );

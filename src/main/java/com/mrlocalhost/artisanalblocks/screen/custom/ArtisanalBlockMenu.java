@@ -52,6 +52,14 @@ public class ArtisanalBlockMenu extends AbstractContainerMenu {
         addDataSlots(blockEntity.dataAccess);
     }
 
+    public void setArtisanalData(ArtisanalBlockConfigs.BLOCK_OPTIONS config, ArtisanalBlockConfigs.REDSTONE_OPTIONS value) {
+        this.artisanalData.set(config.getStateInt(), value.getStateInt());
+    }
+
+    public int getArtisanaldata(ArtisanalBlockConfigs.BLOCK_OPTIONS config) {
+        return this.artisanalData.get(config.getStateInt());
+    }
+
     private void addArtisanalBlockSlots() {
         CUSTOM_SLOTS = List.of(
             this.addSlot(new SlotItemHandler(this.blockEntity.inventory, Direction.DOWN.get3DDataValue(), 8, 16)).index,

@@ -4,7 +4,6 @@ import com.mrlocalhost.artisanalblocks.ArtisanalBlocks;
 import com.mrlocalhost.artisanalblocks.networking.ArtisanalBlockNetworkData;
 import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlockConfigs;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -32,7 +31,7 @@ public class ArtisanalBlockScreen extends AbstractContainerScreen<ArtisanalBlock
     private final WidgetSprites LOW_SPRITE = new WidgetSprites(LOW_LOCATION, LOW_HOVER_LOCATION);
     private final WidgetSprites HIGH_SPRITE = new WidgetSprites(HIGH_LOCATION, HIGH_HOVER_LOCATION);
 
-    private Map<String, ImageButton> CUSTOM_BUTTONS = new HashMap<>();
+    private final Map<String, ArtisanalImageButton> CUSTOM_BUTTONS = new HashMap<>();
     private final ResourceLocation GUI_TEXTURE =
             ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID, "textures/gui/artisanal_block/artisanal_block_gui.png");
 
@@ -74,25 +73,59 @@ public class ArtisanalBlockScreen extends AbstractContainerScreen<ArtisanalBlock
         this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
+    @Override
+    protected void containerTick() {
+        syncScreenButtons();
+    }
+
+    private void syncScreenButtons() {
+        for (int i = 0; i < ArtisanalBlockConfigs.TOTAL_REDSTONE_OPTIONS; i++) {
+            ArtisanalBlockConfigs.BLOCK_OPTIONS config = ArtisanalBlockConfigs.BLOCK_OPTIONS.getState(i);
+            ArtisanalBlockConfigs.REDSTONE_OPTIONS newValue = menu.blockEntity.getBlockConfig(ArtisanalBlockConfigs.BLOCK_OPTIONS.getState(i));
+            ArtisanalImageButton currentButton = CUSTOM_BUTTONS.get(config.name());
+
+            switch(newValue) {
+                case ArtisanalBlockConfigs.REDSTONE_OPTIONS.IGNORED: {
+                    if (currentButton.getWidgetSprites() != IGNORED_SPRITE) {
+                        updateButtonSprite(CUSTOM_BUTTONS.get(config.name()), IGNORED_SPRITE, config);
+                    }
+                    break;
+                }
+                case ArtisanalBlockConfigs.REDSTONE_OPTIONS.LOW: {
+                    if (currentButton.getWidgetSprites() != LOW_SPRITE) {
+                        updateButtonSprite(CUSTOM_BUTTONS.get(config.name()), LOW_SPRITE, config);
+                    }
+                    break;
+                }
+                case ArtisanalBlockConfigs.REDSTONE_OPTIONS.HIGH: default: {
+                    if (currentButton.getWidgetSprites() != HIGH_SPRITE) {
+                        updateButtonSprite(CUSTOM_BUTTONS.get(config.name()), HIGH_SPRITE, config);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
     private void initButtons() {
 
         int centerX = ((width - imageWidth) / 2) + imageWidth/2;
         int centerY = ((height - imageHeight) / 2) + imageHeight/2;
 
         CUSTOM_BUTTONS.put(ArtisanalBlockConfigs.BLOCK_OPTIONS.LIGHT.name(),
-            new ImageButton(centerX+12, centerY-76, 16, 16, INITIAL_SCREEN_STATES.get(0),
+            new ArtisanalImageButton(centerX+12, centerY-76, 16, 16, INITIAL_SCREEN_STATES.get(0),
         button -> { selectOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.LIGHT); }));
 
         CUSTOM_BUTTONS.put(ArtisanalBlockConfigs.BLOCK_OPTIONS.PLAYER_PASSAGE.name(),
-            new ImageButton(centerX+12, centerY-58, 16, 16, INITIAL_SCREEN_STATES.get(1),
+            new ArtisanalImageButton(centerX+12, centerY-58, 16, 16, INITIAL_SCREEN_STATES.get(1),
         button -> { selectOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.PLAYER_PASSAGE); }));
 
         CUSTOM_BUTTONS.put(ArtisanalBlockConfigs.BLOCK_OPTIONS.PASSIVE_PASSAGE.name(),
-            new ImageButton(centerX+12, centerY-40, 16, 16, INITIAL_SCREEN_STATES.get(2),
+            new ArtisanalImageButton(centerX+12, centerY-40, 16, 16, INITIAL_SCREEN_STATES.get(2),
         button -> { selectOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.PASSIVE_PASSAGE); }));
 
         CUSTOM_BUTTONS.put(ArtisanalBlockConfigs.BLOCK_OPTIONS.HOSTILE_PASSAGE.name(),
-            new ImageButton(centerX+12, centerY-22, 16, 16, INITIAL_SCREEN_STATES.get(3),
+            new ArtisanalImageButton(centerX+12, centerY-22, 16, 16, INITIAL_SCREEN_STATES.get(3),
         button -> { selectOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.HOSTILE_PASSAGE); }));
     }
 
@@ -126,8 +159,8 @@ public class ArtisanalBlockScreen extends AbstractContainerScreen<ArtisanalBlock
         PacketDistributor.sendToServer(new ArtisanalBlockNetworkData(menu.blockEntity.getBlockPos(), config.getStateInt(), newState.getStateInt()));
     }
 
-    private void updateButtonSprite(ImageButton originalButton, WidgetSprites newSprite, ArtisanalBlockConfigs.BLOCK_OPTIONS config) {
-        ImageButton newButton = new ImageButton(
+    private void updateButtonSprite(ArtisanalImageButton originalButton, WidgetSprites newSprite, ArtisanalBlockConfigs.BLOCK_OPTIONS config) {
+        ArtisanalImageButton newButton = new ArtisanalImageButton(
                 originalButton.getX(), originalButton.getY(),
                 originalButton.getWidth(), originalButton.getHeight(),
                 newSprite,
