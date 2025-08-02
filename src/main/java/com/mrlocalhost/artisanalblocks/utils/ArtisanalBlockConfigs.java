@@ -11,8 +11,10 @@ public class ArtisanalBlockConfigs implements INBTSerializable<CompoundTag> {
 
     private final EnumMap<BLOCK_OPTIONS, REDSTONE_OPTIONS> redstoneStates = new EnumMap<>(BLOCK_OPTIONS.class);
 
+    public static final int TOTAL_REDSTONE_OPTIONS = 4;
+
     public ArtisanalBlockConfigs() {
-        this.redstoneStates.put(BLOCK_OPTIONS.LIGHT, REDSTONE_OPTIONS.LOW);
+        this.redstoneStates.put(BLOCK_OPTIONS.LIGHT, REDSTONE_OPTIONS.IGNORED);
         this.redstoneStates.put(BLOCK_OPTIONS.PLAYER_PASSAGE, REDSTONE_OPTIONS.IGNORED);
         this.redstoneStates.put(BLOCK_OPTIONS.PASSIVE_PASSAGE, REDSTONE_OPTIONS.IGNORED);
         this.redstoneStates.put(BLOCK_OPTIONS.HOSTILE_PASSAGE, REDSTONE_OPTIONS.IGNORED);
@@ -27,10 +29,31 @@ public class ArtisanalBlockConfigs implements INBTSerializable<CompoundTag> {
     }
 
     public enum BLOCK_OPTIONS {
-        LIGHT,
-        PLAYER_PASSAGE,
-        PASSIVE_PASSAGE,
-        HOSTILE_PASSAGE
+        LIGHT(0),
+        PLAYER_PASSAGE(1),
+        PASSIVE_PASSAGE(2),
+        HOSTILE_PASSAGE(3);
+
+        private final int state;
+
+        BLOCK_OPTIONS(int i) {
+            this.state = i;
+        }
+
+        public static BLOCK_OPTIONS getState(int i) {
+            return switch (i) {
+                case (0) -> LIGHT;
+                case (1) -> PLAYER_PASSAGE;
+                case (2) -> PASSIVE_PASSAGE;
+                case (3) -> HOSTILE_PASSAGE;
+                default -> throw new IllegalStateException("Unexpected value: " + i);
+            };
+        }
+
+        public int getStateInt() {
+            return this.state;
+        }
+
     }
 
     public enum REDSTONE_OPTIONS {

@@ -3,6 +3,7 @@ package com.mrlocalhost.artisanalblocks.screen.custom;
 import com.mrlocalhost.artisanalblocks.block.ModBlocks;
 import com.mrlocalhost.artisanalblocks.block.entity.ArtisanalBlockEntity;
 import com.mrlocalhost.artisanalblocks.screen.ModMenuTypes;
+import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlockConfigs;
 import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlocksUtilities;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
@@ -12,13 +13,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ClickType;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,19 +27,29 @@ public class ArtisanalBlockMenu extends AbstractContainerMenu {
     private final Level level;
     private List<Integer> CUSTOM_SLOTS;
 
+    @SuppressWarnings("unused")
+    private final ContainerData artisanalData;
+
     @SuppressWarnings("all") //suppressed 'try'-with-resources statement warning
     public ArtisanalBlockMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(containerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()));
+        this(
+            containerId,
+            inv,
+            (ArtisanalBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos())
+        );
     }
 
-    public ArtisanalBlockMenu(int containerId, Inventory inv, BlockEntity blockEntity) {
+    //SERVER MENU CONSTRUCTOR
+    public ArtisanalBlockMenu(int containerId, Inventory inv, ArtisanalBlockEntity blockEntity) {
         super(ModMenuTypes.ARTISANAL_BLOCK_MENU.get(), containerId);
-        this.blockEntity = ((ArtisanalBlockEntity) blockEntity);
+        this.blockEntity = blockEntity;
         this.level = inv.player.level();
-
+        checkContainerDataCount(blockEntity.dataAccess, ArtisanalBlockConfigs.TOTAL_REDSTONE_OPTIONS);
+        this.artisanalData = blockEntity.dataAccess;
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
         addArtisanalBlockSlots();
+        addDataSlots(blockEntity.dataAccess);
     }
 
     private void addArtisanalBlockSlots() {
@@ -108,5 +115,10 @@ public class ArtisanalBlockMenu extends AbstractContainerMenu {
             crashreportcategory.setDetail("Type", clickType);
             throw new ReportedException(crashreport);
         }
+    }
+
+    public void setData(int id, int data) {
+        super.setData(id, data);
+        this.broadcastChanges();
     }
 }

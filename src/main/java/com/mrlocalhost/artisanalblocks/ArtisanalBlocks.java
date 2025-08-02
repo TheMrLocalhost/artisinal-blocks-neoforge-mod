@@ -5,10 +5,16 @@ import com.mrlocalhost.artisanalblocks.block.entity.ModBlockEntities;
 import com.mrlocalhost.artisanalblocks.block.entity.renderer.ArtisanalBlockEntityRenderer;
 import com.mrlocalhost.artisanalblocks.item.ModCreativeModeTabs;
 import com.mrlocalhost.artisanalblocks.item.ModItems;
+import com.mrlocalhost.artisanalblocks.networking.ArtisanalBlockNetworkData;
+import com.mrlocalhost.artisanalblocks.networking.handlers.ArtisanalBlockNetworkHandler;
 import com.mrlocalhost.artisanalblocks.screen.ModMenuTypes;
 import com.mrlocalhost.artisanalblocks.screen.custom.ArtisanalBlockScreen;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.MainThreadPayloadHandler;
+import net.neoforged.neoforge.network.registration.HandlerThread;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -54,6 +60,24 @@ public class ArtisanalBlocks {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
 
+
+    }
+
+    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.DEDICATED_SERVER)
+    public static class ServerModEvents {
+
+        @SubscribeEvent // on the mod event bus
+        public static void register(final RegisterPayloadHandlersEvent event) {
+            final PayloadRegistrar registrar = event.registrar("1").executesOn(HandlerThread.MAIN);
+            registrar.playToServer(
+                    ArtisanalBlockNetworkData.TYPE,
+                    ArtisanalBlockNetworkData.STREAM_CODEC,
+                    new MainThreadPayloadHandler<>(
+                            ArtisanalBlockNetworkHandler::handleDataOnMain
+                    )
+            );
+        }
+
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
@@ -62,6 +86,18 @@ public class ArtisanalBlocks {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
 
+        }
+
+        @SubscribeEvent // on the mod event bus
+        public static void register(final RegisterPayloadHandlersEvent event) {
+            final PayloadRegistrar registrar = event.registrar("1").executesOn(HandlerThread.MAIN);
+            registrar.playToServer(
+                    ArtisanalBlockNetworkData.TYPE,
+                    ArtisanalBlockNetworkData.STREAM_CODEC,
+                    new MainThreadPayloadHandler<>(
+                            ArtisanalBlockNetworkHandler::handleDataOnMain
+                    )
+            );
         }
 
         @SubscribeEvent

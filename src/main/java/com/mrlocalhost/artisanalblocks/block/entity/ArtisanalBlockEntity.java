@@ -14,6 +14,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,7 +39,26 @@ public class ArtisanalBlockEntity extends BlockEntity implements MenuProvider {
         }
     };
 
-    public final ArtisanalBlockConfigs blockConfig = new ArtisanalBlockConfigs();
+    public final ContainerData dataAccess = new ContainerData() {
+        @Override
+        public int get(int id) {
+            ArtisanalBlockConfigs.BLOCK_OPTIONS config = ArtisanalBlockConfigs.BLOCK_OPTIONS.getState(id);
+            return ArtisanalBlockEntity.this.blockConfig.getRedstoneOption(config).getStateInt();
+        }
+        @Override
+        public void set(int id, int value) {
+            ArtisanalBlockConfigs.BLOCK_OPTIONS config = ArtisanalBlockConfigs.BLOCK_OPTIONS.getState(id);
+            ArtisanalBlockEntity.this.blockConfig.setRedstoneOption(config, ArtisanalBlockConfigs.REDSTONE_OPTIONS.getState(value));
+        }
+        @Override
+        public int getCount() { return ArtisanalBlockConfigs.TOTAL_REDSTONE_OPTIONS; }
+    };
+
+    private final ArtisanalBlockConfigs blockConfig = new ArtisanalBlockConfigs();
+
+    public void setBlockConfig(ArtisanalBlockConfigs.BLOCK_OPTIONS option, ArtisanalBlockConfigs.REDSTONE_OPTIONS value) {
+        this.blockConfig.setRedstoneOption(option, value);
+    }
 
     public void clearSlot(int slot) {
         inventory.setStackInSlot(slot, ItemStack.EMPTY);
@@ -46,6 +66,10 @@ public class ArtisanalBlockEntity extends BlockEntity implements MenuProvider {
 
     public ArtisanalBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.ARTISANAL_BLOCK_BE.get(), pos, blockState);
+    }
+
+    public ArtisanalBlockConfigs.REDSTONE_OPTIONS getBlockConfig(ArtisanalBlockConfigs.BLOCK_OPTIONS config) {
+        return this.blockConfig.getRedstoneOption(config);
     }
 
     //drop nothing and clear item stacks

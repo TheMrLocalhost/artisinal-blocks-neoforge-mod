@@ -188,17 +188,63 @@ public class ArtisanalBlock extends BaseEntityBlock {
         }
     }
 
-    private void updateRedstoneStates(BlockState state, Level level, BlockPos pos) {
+    public void updateRedstoneState(BlockState state, Level level, BlockPos pos, ArtisanalBlockConfigs.BLOCK_OPTIONS currentConfig) {
         if (!(level instanceof ServerLevel serverLevel)) return;
         if (level.getBlockEntity(pos) instanceof ArtisanalBlockEntity blockEntity) {
-            if (!blockEntity.blockConfig.getRedstoneOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.LIGHT).equals(ArtisanalBlockConfigs.REDSTONE_OPTIONS.IGNORED)) {
-                ArtisanalBlockConfigs.REDSTONE_OPTIONS lightConfig = blockEntity.blockConfig.getRedstoneOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.LIGHT);
-                serverLevel.setBlockAndUpdate(pos,
-                    state.setValue(GLOW,
-                    !level.hasNeighborSignal(pos)
-                        && lightConfig.equals(ArtisanalBlockConfigs.REDSTONE_OPTIONS.LOW))
-                );
+            boolean isLightOption = (currentConfig == ArtisanalBlockConfigs.BLOCK_OPTIONS.LIGHT);
+            ArtisanalBlockConfigs.REDSTONE_OPTIONS currentValue = blockEntity.getBlockConfig(currentConfig);
+            BooleanProperty property = ArtisanalBlocksConstants.BLOCK_CONFIG_PROPERTY_MAP.get(currentConfig);
+
+            switch (currentValue) {
+                case ArtisanalBlockConfigs.REDSTONE_OPTIONS.IGNORED: {
+                    if (isLightOption) {
+                        state = state.setValue(property, true);
+                    }
+                    break;
+                }
+                case ArtisanalBlockConfigs.REDSTONE_OPTIONS.LOW: {
+                    boolean signal = level.hasNeighborSignal(pos);
+                    state = state.setValue(property, !signal);
+                    break;
+                }
+                case ArtisanalBlockConfigs.REDSTONE_OPTIONS.HIGH: {
+                    boolean signal = level.hasNeighborSignal(pos);
+                    state = state.setValue(property, signal);
+                    break;
+                }
             }
+            serverLevel.setBlockAndUpdate(pos, state);
+        }
+    }
+
+    public void updateRedstoneStates(BlockState state, Level level, BlockPos pos) {
+        if (!(level instanceof ServerLevel serverLevel)) return;
+        if (level.getBlockEntity(pos) instanceof ArtisanalBlockEntity blockEntity) {
+            boolean isLightOption = true;
+            for (int i = 0; i < ArtisanalBlockConfigs.TOTAL_REDSTONE_OPTIONS; i++) {
+                ArtisanalBlockConfigs.BLOCK_OPTIONS currentConfig = ArtisanalBlockConfigs.BLOCK_OPTIONS.getState(i);
+                ArtisanalBlockConfigs.REDSTONE_OPTIONS currentValue = blockEntity.getBlockConfig(currentConfig);
+                BooleanProperty property = ArtisanalBlocksConstants.BLOCK_CONFIG_PROPERTY_MAP.get(currentConfig);
+
+                switch (currentValue) {
+                    case ArtisanalBlockConfigs.REDSTONE_OPTIONS.IGNORED: {
+                        if (isLightOption) {
+                            state = state.setValue(property, true);
+                        }
+                        break;
+                    }
+                    case ArtisanalBlockConfigs.REDSTONE_OPTIONS.LOW: {
+                        state = state.setValue(property, !level.hasNeighborSignal(pos));
+                        break;
+                    }
+                    case ArtisanalBlockConfigs.REDSTONE_OPTIONS.HIGH: {
+                        state = state.setValue(property, level.hasNeighborSignal(pos));
+                        break;
+                    }
+                }
+                isLightOption = false;
+            }
+            serverLevel.setBlockAndUpdate(pos, state);
         }
     }
 }

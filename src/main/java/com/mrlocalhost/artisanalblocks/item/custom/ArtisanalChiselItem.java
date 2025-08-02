@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
@@ -47,7 +48,7 @@ public class ArtisanalChiselItem extends Item {
         }
         if (level.getBlockEntity(blockPos) instanceof ArtisanalBlockEntity artisanalBlockEntity) {
             if (!level.isClientSide()) {
-                player.openMenu(
+                ((ServerPlayer) player).openMenu(
                     new SimpleMenuProvider(
                         artisanalBlockEntity,
                         Component.translatable("gui.artisanalblocks.artisanal_block.display_name")),
