@@ -3,6 +3,7 @@ package com.mrlocalhost.artisanalblocks;
 import com.mrlocalhost.artisanalblocks.block.ModBlocks;
 import com.mrlocalhost.artisanalblocks.block.entity.ModBlockEntities;
 import com.mrlocalhost.artisanalblocks.block.entity.renderer.ArtisanalBlockEntityRenderer;
+import com.mrlocalhost.artisanalblocks.component.ModDataComponents;
 import com.mrlocalhost.artisanalblocks.item.ModCreativeModeTabs;
 import com.mrlocalhost.artisanalblocks.item.ModItems;
 import com.mrlocalhost.artisanalblocks.networking.ArtisanalBlockNetworkData;
@@ -48,6 +49,7 @@ public class ArtisanalBlocks {
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
+        ModDataComponents.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

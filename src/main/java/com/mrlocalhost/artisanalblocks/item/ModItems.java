@@ -51,6 +51,8 @@ public class ModItems {
         ITEMS.registerItem("artisanal_chisel", ArtisanalChiselItem::new, new Item.Properties()
             .stacksTo(1));
 
+    //TODO ADD EYEDROPPER
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
