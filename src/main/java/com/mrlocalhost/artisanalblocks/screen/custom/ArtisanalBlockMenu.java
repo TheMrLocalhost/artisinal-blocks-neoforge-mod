@@ -63,11 +63,11 @@ public class ArtisanalBlockMenu extends AbstractContainerMenu {
     private void addArtisanalBlockSlots() {
         CUSTOM_SLOTS = List.of(
             this.addSlot(new SlotItemHandler(this.blockEntity.inventory, Direction.DOWN.get3DDataValue(), 8, 16)).index,
-            this.addSlot(new SlotItemHandler(this.blockEntity.inventory, Direction.UP.get3DDataValue(), 54, 16)).index,
+            this.addSlot(new SlotItemHandler(this.blockEntity.inventory, Direction.UP.get3DDataValue(), 34, 16)).index,
             this.addSlot(new SlotItemHandler(this.blockEntity.inventory, Direction.NORTH.get3DDataValue(), 8, 34)).index,
-            this.addSlot(new SlotItemHandler(this.blockEntity.inventory, Direction.SOUTH.get3DDataValue(), 54, 34)).index,
+            this.addSlot(new SlotItemHandler(this.blockEntity.inventory, Direction.SOUTH.get3DDataValue(), 34, 34)).index,
             this.addSlot(new SlotItemHandler(this.blockEntity.inventory, Direction.WEST.get3DDataValue(), 8, 52)).index,
-            this.addSlot(new SlotItemHandler(this.blockEntity.inventory, Direction.EAST.get3DDataValue(), 54, 52)).index
+            this.addSlot(new SlotItemHandler(this.blockEntity.inventory, Direction.EAST.get3DDataValue(), 34, 52)).index
         );
     }
 
