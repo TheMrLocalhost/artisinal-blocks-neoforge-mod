@@ -119,20 +119,7 @@ public class ArtisanalBlockScreen extends AbstractContainerScreen<ArtisanalBlock
 
         String lightLevelString = (this.lightLevelValue<10) ? " "+this.lightLevelValue : String.valueOf(this.lightLevelValue);
         int lightLevelY = cY-67;
-//        int col0 = cX-8;
         int col3 = cX+32;
-//        int row1 = cY-49;
-//        int row2 = cY-31;
-//
-//        this.addRenderableOnly(new ArtisanalImageButton(col3, lightLevelY, 16, 16, BLANK_BUTTON_WIDGET, null));
-//        this.addRenderableOnly(new ArtisanalImageButton(col0, row1, 16, 16, GLOWSTONE_WIDGET, null))
-//            .setTooltip(Tooltip.create(Component.literal("Light Redstone Config")));
-//        this.addRenderableOnly(new ArtisanalImageButton(col0, row2, 16, 16, PLAYER_DUST_WIDGET, null))
-//            .setTooltip(Tooltip.create(Component.literal("Player Passage Config")));
-//        this.addRenderableOnly(new ArtisanalImageButton(col3, row1, 16, 16, PASSIVE_DUST_WIDGET, null))
-//            .setTooltip(Tooltip.create(Component.literal("Passive Passage Config")));
-//        this.addRenderableOnly(new ArtisanalImageButton(col3, row2, 16, 16, HOSTILE_DUST_WIDGET, null))
-//            .setTooltip(Tooltip.create(Component.literal("Hostile Redstone Config")));
 
         guiGraphics.pose().pushPose();
         guiGraphics.pose().rotateAround(Axis.ZN.rotationDegrees(180.0F), col3, lightLevelY, 0);
@@ -147,7 +134,7 @@ public class ArtisanalBlockScreen extends AbstractContainerScreen<ArtisanalBlock
         guiGraphics.drawString(this.font, "U", cX-36, cY-62, 4144959, false);
         guiGraphics.drawString(this.font, "S", cX-36, cY-45, 4144959, false);
         guiGraphics.drawString(this.font, "E", cX-36, cY-27, 4144959, false);
-        guiGraphics.drawString(this.font, "Light Level", cY+162, lightLevelY-10, 4144959, false);
+        guiGraphics.drawString(this.font, "Light Level", cX+14, lightLevelY-10, 4144959, false);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
 
     }

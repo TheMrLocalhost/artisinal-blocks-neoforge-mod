@@ -3,13 +3,14 @@ package com.mrlocalhost.artisanalblocks;
 import com.mrlocalhost.artisanalblocks.block.ModBlocks;
 import com.mrlocalhost.artisanalblocks.block.entity.ModBlockEntities;
 import com.mrlocalhost.artisanalblocks.block.entity.renderer.ArtisanalBlockEntityRenderer;
-import com.mrlocalhost.artisanalblocks.component.ModDataComponents;
+import com.mrlocalhost.artisanalblocks.component.ModDataComponentTypes;
 import com.mrlocalhost.artisanalblocks.item.ModCreativeModeTabs;
 import com.mrlocalhost.artisanalblocks.item.ModItems;
 import com.mrlocalhost.artisanalblocks.networking.ArtisanalBlockNetworkData;
 import com.mrlocalhost.artisanalblocks.networking.handlers.ArtisanalBlockNetworkHandler;
 import com.mrlocalhost.artisanalblocks.screen.ModMenuTypes;
 import com.mrlocalhost.artisanalblocks.screen.custom.ArtisanalBlockScreen;
+import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlocksUtilities;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -49,7 +50,7 @@ public class ArtisanalBlocks {
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
-        ModDataComponents.register(modEventBus);
+        ModDataComponentTypes.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
@@ -88,7 +89,7 @@ public class ArtisanalBlocks {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-
+            ArtisanalBlocksUtilities.addCustomItemProperties();
         }
 
         @SubscribeEvent // on the mod event bus

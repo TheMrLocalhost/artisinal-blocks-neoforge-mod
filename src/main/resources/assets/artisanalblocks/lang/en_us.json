@@ -10,6 +10,7 @@
   "item.artisanalblocks.hostile_passage_rod": "Hostile Passage Rod",
   "item.artisanalblocks.lighting_rod": "Lighting Rod",
   "item.artisanalblocks.artisanal_chisel": "Artisanal Chisel",
+  "item.artisanalblocks.eyedropper": "Eyedropper",
 
   "gui.artisanalblocks.artisanal_block.display_name": "Artisanal Block",
 
@@ -44,6 +45,14 @@
   "tooltip.artisanalblocks.artisanal_chisel_item.shift_down_1": "Used on an artisanal block",
   "tooltip.artisanalblocks.artisanal_chisel_item.shift_down_2": "to edit all attributes",
   "tooltip.artisanalblocks.artisanal_chisel_item": "Press shift for more info",
+
+  "tooltip.artisanalblocks.eyedropper_item.shift_down_1": "Used on an artisanal block",
+  "tooltip.artisanalblocks.eyedropper_item.shift_down_2": "to copy/paste configurations",
+  "tooltip.artisanalblocks.eyedropper_item.control_down_1": "Light Level: ",
+  "tooltip.artisanalblocks.eyedropper_item.control_down_2": "Redstone Control: ",
+  "tooltip.artisanalblocks.eyedropper_item.control_down_3": "Stored Blocks: ",
+  "tooltip.artisanalblocks.eyedropper_item_1": "Press shift for more info",
+  "tooltip.artisanalblocks.eyedropper_item_2": "Press Control for copied info",
 
   "client_message.pop_up.artisanalblocks.player_passible.true": "Block is passible to players",
   "client_message.pop_up.artisanalblocks.player_passible.false": "Block is not passible to players",

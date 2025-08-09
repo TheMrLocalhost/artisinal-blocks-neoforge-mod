@@ -37,6 +37,8 @@ public class ModCreativeModeTabs {
 
                             output.accept(ModItems.ARTISANAL_CHISEL);
 
+                            output.accept(ModItems.EYEDROPPER);
+
                             output.accept(ModBlocks.ARTISANAL_BLOCK);
                         })
                     .build());
