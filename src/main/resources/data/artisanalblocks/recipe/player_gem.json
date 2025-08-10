@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "group": "artisanalblocks_player_gem",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 2.1,
+  "ingredient": {
+    "item": "artisanalblocks:player_dust"
+  },
+  "result": {
+    "id": "artisanalblocks:player_gem"
+  }
+}

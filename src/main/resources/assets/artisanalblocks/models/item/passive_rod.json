@@ -1,0 +1,6 @@
+{
+  "parent": "artisanalblocks:item/wand",
+  "textures": {
+    "layer0": "artisanalblocks:item/passive_rod"
+  }
+}

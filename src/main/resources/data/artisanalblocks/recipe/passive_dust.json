@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "artisanalblocks_passive_dust",
+  "category": "misc",
+  "key": {
+    "E": {"item": "minecraft:ender_pearl"},
+    "I": {"item": "minecraft:iron_block"},
+    "S": {"item": "minecraft:beef"},
+    "M": {"item": "minecraft:mutton"},
+    "P": {"item": "minecraft:porkchop"},
+    "C": {"item": "minecraft:chicken"}
+  },
+  "pattern": [
+    "SEM",
+    "EIE",
+    "PEC"
+  ],
+  "result": {
+    "id": "artisanalblocks:passive_dust"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "artisanalblocks_hostile_dust",
+  "category": "misc",
+  "key": {
+    "E": {"item": "minecraft:ender_pearl"},
+    "I": {"item": "minecraft:iron_block"},
+    "G": {"item": "minecraft:gunpowder"},
+    "Z": {"item": "minecraft:rotten_flesh"},
+    "B": {"item": "minecraft:bone"},
+    "S": {"item": "minecraft:spider_eye"}
+  },
+  "pattern": [
+    "GEZ",
+    "EIE",
+    "BES"
+  ],
+  "result": {
+    "id": "artisanalblocks:hostile_dust"
+  }
+}

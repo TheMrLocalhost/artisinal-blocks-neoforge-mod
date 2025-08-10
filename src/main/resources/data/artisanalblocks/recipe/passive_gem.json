@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "group": "artisanalblocks_passive_gem",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 2.1,
+  "ingredient": {
+    "item": "artisanalblocks:passive_dust"
+  },
+  "result": {
+    "id": "artisanalblocks:passive_gem"
+  }
+}

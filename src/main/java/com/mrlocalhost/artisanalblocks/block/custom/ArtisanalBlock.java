@@ -1,0 +1,250 @@
+package com.mrlocalhost.artisanalblocks.block.custom;
+
+import com.mojang.serialization.MapCodec;
+import com.mrlocalhost.artisanalblocks.block.ModBlocks;
+import com.mrlocalhost.artisanalblocks.block.entity.ArtisanalBlockEntity;
+import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlockConfigs;
+import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlocksConstants;
+import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlocksUtilities;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.EntityCollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+public class ArtisanalBlock extends BaseEntityBlock {
+
+    public static final BooleanProperty GLOW = BooleanProperty.create("glow");
+    public static final IntegerProperty GLOW_VALUE = IntegerProperty.create("glow_value", 0, 15);
+    public static final BooleanProperty PLAYER_PASSIBLE = BooleanProperty.create("player_passible");
+    public static final BooleanProperty HOSTILE_PASSIBLE = BooleanProperty.create("hostile_passible");
+    public static final BooleanProperty PASSIVE_PASSIBLE = BooleanProperty.create("passive_passible");
+
+    public static final MapCodec<ArtisanalBlock> CODEC = simpleCodec(ArtisanalBlock::new);
+
+    public ArtisanalBlock(Properties properties) {
+        super(properties);
+        this.registerDefaultState(this.defaultBlockState()
+            .setValue(GLOW, true)
+            .setValue(GLOW_VALUE, 0)
+            .setValue(PLAYER_PASSIBLE, false)
+            .setValue(HOSTILE_PASSIBLE, false)
+            .setValue(PASSIVE_PASSIBLE, false)
+        );
+    }
+
+    @Override
+    protected void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState oldState, boolean movedByPiston) {
+        updateRedstoneStates(state, level, pos);
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(GLOW);
+        builder.add(GLOW_VALUE);
+        builder.add(PLAYER_PASSIBLE);
+        builder.add(HOSTILE_PASSIBLE);
+        builder.add(PASSIVE_PASSIBLE);
+    }
+
+    /* ************ */
+    /* BLOCK ENTITY */
+    /* ************ */
+    @Override
+    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
+        return RenderShape.INVISIBLE;
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+        return new ArtisanalBlockEntity(pos, state);
+    }
+
+    @Override
+    protected @NotNull ItemInteractionResult useItemOn(
+            @NotNull ItemStack stack, @NotNull BlockState state,
+            @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
+            @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+        if (level.getBlockEntity(pos) instanceof ArtisanalBlockEntity artisanalBlockEntity) {
+
+            if (hand.equals(InteractionHand.OFF_HAND) || level.isClientSide() || (!stack.isEmpty() && (!ArtisanalBlocksUtilities.isPlacableInArtisanalBlock(stack)) && !stack.getItem().equals(ModBlocks.ARTISANAL_BLOCK.asItem()))) {
+                if (level.isClientSide()) {
+                    return ItemInteractionResult.SUCCESS;
+                }
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            }
+            Direction side = hitResult.getDirection();
+            int slot = side.get3DDataValue();
+
+            //This conditional block could definitely be simplified, but I cannot be bothered
+            if(!stack.isEmpty() && !player.isCrouching()) { //hand has a block
+                if (!stack.getItem().equals(ModBlocks.ARTISANAL_BLOCK.asItem())) {
+                    artisanalBlockEntity.clearSlot(slot); //empty slot before attempting to fill it
+                    ItemStack itemCopy = stack.copy();
+                    itemCopy.setCount(1);
+                    artisanalBlockEntity.inventory.insertItem(slot, itemCopy, false);
+                    player.playNotifySound(SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.25F, 2.0F);
+                } else if (!artisanalBlockEntity.inventory.getStackInSlot(slot).isEmpty()) {
+                    artisanalBlockEntity.clearSlot(slot); //empty slot before attempting to fill it
+                    player.playNotifySound(SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.25F, 1.0F);
+                }
+
+            } else if (stack.isEmpty() && !player.isCrouching()) { //if hand is populated
+                if (!artisanalBlockEntity.inventory.getStackInSlot(slot).isEmpty()) {
+                    artisanalBlockEntity.clearSlot(slot); //empty item from slot in block
+                    player.playNotifySound(SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.25F, 1.0F);
+                }
+            }
+            return ItemInteractionResult.CONSUME; //prevent the block from being placed
+        }
+        return ItemInteractionResult.FAIL;
+
+    }
+
+    @Override
+    protected @NotNull VoxelShape getCollisionShape(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos blockPos, @NotNull CollisionContext context) {
+        if (context instanceof EntityCollisionContext entitycollisioncontext) {
+            Entity entity = entitycollisioncontext.getEntity();
+            if (entity != null) {
+                boolean isPlayer = entity instanceof Player;
+                boolean isMonster = entity.getType().getCategory().equals(MobCategory.MONSTER);
+                boolean isPassive = List.of(
+                    MobCategory.CREATURE,
+                    MobCategory.AXOLOTLS
+                ).contains(entity.getType().getCategory());
+
+                if (entity instanceof FallingBlockEntity
+                    || (isPlayer && blockState.getValue(PLAYER_PASSIBLE))
+                    || (isMonster && blockState.getValue(HOSTILE_PASSIBLE))
+                    || (isPassive && blockState.getValue(PASSIVE_PASSIBLE))
+                ) {
+                    return Shapes.empty();
+                }
+            }
+        }
+        return super.getCollisionShape(blockState, blockGetter, blockPos, context);
+
+    }
+
+    @Override
+    protected boolean skipRendering(@NotNull BlockState state, BlockState adjacentBlockState, @NotNull Direction side) {
+        return adjacentBlockState.is(this) || super.skipRendering(state, adjacentBlockState, side);
+    }
+
+    @Override
+    protected void neighborChanged(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Block block, @NotNull BlockPos fromPos, boolean isMoving) {
+        if (!level.isClientSide) {
+            updateRedstoneStates(state, level, pos);
+        }
+    }
+
+    @Override
+    public void animateTick(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        if (level.hasNeighborSignal(pos)) {
+            for (Vec3 corner: ArtisanalBlocksConstants.BLOCK_CORNERS) { //spawn a set of particles at each corner
+                level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.REDSTONE_BLOCK.defaultBlockState()),
+                    true,
+                    pos.getX() + corner.x,
+                    pos.getY() + corner.y,
+                    pos.getZ() + corner.z,
+                    0.0, 0.0, 0.0);
+            }
+        }
+    }
+
+    public void updateRedstoneState(BlockState state, Level level, BlockPos pos, ArtisanalBlockConfigs.BLOCK_OPTIONS currentConfig) {
+        if (!(level instanceof ServerLevel serverLevel)) return;
+        if (level.getBlockEntity(pos) instanceof ArtisanalBlockEntity blockEntity) {
+            boolean isLightOption = (currentConfig == ArtisanalBlockConfigs.BLOCK_OPTIONS.LIGHT);
+            ArtisanalBlockConfigs.REDSTONE_OPTIONS currentValue = blockEntity.getBlockConfig(currentConfig);
+            BooleanProperty property = ArtisanalBlocksConstants.BLOCK_CONFIG_PROPERTY_MAP.get(currentConfig);
+
+            switch (currentValue) {
+                case ArtisanalBlockConfigs.REDSTONE_OPTIONS.IGNORED: {
+                    if (isLightOption) {
+                        state = state.setValue(property, true);
+                    }
+                    break;
+                }
+                case ArtisanalBlockConfigs.REDSTONE_OPTIONS.LOW: {
+                    boolean signal = level.hasNeighborSignal(pos);
+                    state = state.setValue(property, !signal);
+                    break;
+                }
+                case ArtisanalBlockConfigs.REDSTONE_OPTIONS.HIGH: {
+                    boolean signal = level.hasNeighborSignal(pos);
+                    state = state.setValue(property, signal);
+                    break;
+                }
+            }
+            serverLevel.setBlockAndUpdate(pos, state);
+        }
+    }
+
+    public void updateRedstoneStates(BlockState state, Level level, BlockPos pos) {
+        if (!(level instanceof ServerLevel serverLevel)) return;
+        if (level.getBlockEntity(pos) instanceof ArtisanalBlockEntity blockEntity) {
+            boolean isLightOption = true;
+            for (int i = 0; i < ArtisanalBlockConfigs.TOTAL_REDSTONE_OPTIONS; i++) {
+                ArtisanalBlockConfigs.BLOCK_OPTIONS currentConfig = ArtisanalBlockConfigs.BLOCK_OPTIONS.getState(i);
+                ArtisanalBlockConfigs.REDSTONE_OPTIONS currentValue = blockEntity.getBlockConfig(currentConfig);
+                BooleanProperty property = ArtisanalBlocksConstants.BLOCK_CONFIG_PROPERTY_MAP.get(currentConfig);
+
+                switch (currentValue) {
+                    case ArtisanalBlockConfigs.REDSTONE_OPTIONS.IGNORED: {
+                        if (isLightOption) {
+                            state = state.setValue(property, true);
+                        }
+                        break;
+                    }
+                    case ArtisanalBlockConfigs.REDSTONE_OPTIONS.LOW: {
+                        state = state.setValue(property, !level.hasNeighborSignal(pos));
+                        break;
+                    }
+                    case ArtisanalBlockConfigs.REDSTONE_OPTIONS.HIGH: {
+                        state = state.setValue(property, level.hasNeighborSignal(pos));
+                        break;
+                    }
+                }
+                isLightOption = false;
+            }
+            serverLevel.setBlockAndUpdate(pos, state);
+        }
+    }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "artisanalblocks:item/eyedropper/eyedropper_empty"
+  },
+  "overrides": [
+    {"predicate": {"artisanalblocks:used": 0},"model": "artisanalblocks:item/eyedropper_empty"},
+    {"predicate": {"artisanalblocks:used": 1},"model": "artisanalblocks:item/eyedropper_full"}
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [ 180, 90, 55 ],
+      "translation": [ 0, 4.0, 0.5 ],
+      "scale": [ 0.85, 0.85, 0.85 ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [ 180, -90, -55 ],
+      "translation": [ 0, 4.0, 0.5 ],
+      "scale": [ 0.85, 0.85, 0.85 ]
+    },
+    "firstperson_righthand": {
+      "rotation": [ 180, 90, 25 ],
+      "translation": [ 1.13, 6.5, 1.13 ],
+      "scale": [ 0.5, 0.5, 0.5 ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [ 180, -90, -25 ],
+      "translation": [ 1.13, 6.5, 1.13 ],
+      "scale": [ 0.5, 0.5, 0.5 ]
+    }
+  }
+}

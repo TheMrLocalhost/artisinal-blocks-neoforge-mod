@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "artisanalblocks_paintbrush",
+  "category": "misc",
+  "key": {
+    "S": {"tag": "c:rods/wooden"},
+    "C": {"item": "artisanalblocks:cleaning_cloth"}
+  },
+  "pattern": [
+    "  C",
+    " S ",
+    "S  "
+  ],
+  "result": {
+    "id": "artisanalblocks:paintbrush"
+  }
+}

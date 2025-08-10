@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "artisanalblocks_player_rod",
+  "category": "misc",
+  "key": {
+    "S": {"tag": "c:rods/wooden"},
+    "D": {"item": "artisanalblocks:player_gem"},
+    "C": {"item": "minecraft:diamond"}
+  },
+  "pattern": [
+    "CD",
+    "SC"
+  ],
+  "result": {
+    "id": "artisanalblocks:player_rod"
+  }
+}

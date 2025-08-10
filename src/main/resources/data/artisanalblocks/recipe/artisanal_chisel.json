@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "artisanalblocks_artisanal_chisel",
+  "category": "misc",
+  "key": {
+    "N": {"item": "minecraft:netherite_block"},
+    "D": {"item": "minecraft:diamond_block"},
+    "S": {"tag": "c:rods/wooden"},
+    "L": {"item": "artisanalblocks:player_gem"},
+    "P": {"item": "artisanalblocks:passive_gem"},
+    "H": {"item": "artisanalblocks:hostile_gem"}
+  },
+  "pattern": [
+    " DN",
+    "LSD",
+    "PH "
+  ],
+  "result": {
+    "id": "artisanalblocks:artisanal_chisel"
+  }
+}

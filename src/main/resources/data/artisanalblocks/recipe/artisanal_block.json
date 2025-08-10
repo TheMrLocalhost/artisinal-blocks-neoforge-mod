@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "artisanalblocks_artisanal_block",
+  "category": "misc",
+  "ingredients": [
+    {"item": "minecraft:sand"},
+    {"tag":  "c:stones"},
+    {"item": "minecraft:bone_meal"},
+    {"item": "minecraft:clay_ball"},
+    {"item": "minecraft:redstone"},
+    {"item": "minecraft:glowstone_dust"}
+  ],
+  "result": {
+    "id": "artisanalblocks:artisanal_block",
+    "count": 2
+  }
+}

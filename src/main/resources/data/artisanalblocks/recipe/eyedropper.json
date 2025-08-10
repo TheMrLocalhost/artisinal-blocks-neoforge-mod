@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "artisanalblocks_eyedropper",
+  "category": "misc",
+  "key": {
+    "W": {"tag": "minecraft:wool"},
+    "G": {"item": "minecraft:glass"}
+  },
+  "pattern": [
+    " WW",
+    " GW",
+    "G  "
+  ],
+  "result": {
+    "id": "artisanalblocks:eyedropper"
+  }
+}
