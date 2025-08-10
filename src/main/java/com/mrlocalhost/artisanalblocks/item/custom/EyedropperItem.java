@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EyedropperItem extends Item {
 
@@ -92,10 +93,14 @@ public class EyedropperItem extends Item {
     }
 
     private boolean hasAnyDataComponent(ItemStack itemStack) {
+        boolean hasComponent = false;
         for (DeferredHolder<DataComponentType<?>, ? extends DataComponentType<?>> component : ModDataComponentTypes.DATA_COMPONENT_TYPES.getEntries()) {
-            return itemStack.has(component);
+            if (itemStack.has(component)) hasComponent = true;
         }
-        return itemStack.has(DataComponents.CONTAINER);
+        if (itemStack.has(DataComponents.CONTAINER)) {
+            if (Objects.requireNonNull(itemStack.get(DataComponents.CONTAINER)).getSlots() > 0) hasComponent = true;
+        }
+        return hasComponent;
     }
     private boolean hasBlocks(List<ItemStack> itemStacks) {
         for(ItemStack stack : itemStacks) {
@@ -208,8 +213,10 @@ public class EyedropperItem extends Item {
                     }
                     if (stack.has(DataComponents.CONTAINER)) {
                         List<ItemStack> itemStacks = stack.get(DataComponents.CONTAINER).stream().toList();
+                        int stackSize = itemStacks.size();
                         for (Direction direction : ArtisanalBlocksConstants.BLOCK_FACE_POS) {
-                            artisanalBlockEntity.inventory.setStackInSlot(direction.get3DDataValue(), itemStacks.get(direction.get3DDataValue()));
+                            int index = direction.get3DDataValue();
+                            if (stackSize > index) artisanalBlockEntity.inventory.setStackInSlot(index, itemStacks.get(index));
                         }
                     }
                     level.setBlockEntity(artisanalBlockEntity);
@@ -217,7 +224,6 @@ public class EyedropperItem extends Item {
                     player.playNotifySound(SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 0.5F, 0.75F);
                 }
             }
-
             return InteractionResult.CONSUME;
         } else {
             if (player.isCrouching()) {
