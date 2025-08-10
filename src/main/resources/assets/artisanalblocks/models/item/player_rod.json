@@ -1,6 +1,6 @@
 {
   "parent": "artisanalblocks:item/wand",
   "textures": {
-    "layer0": "artisanalblocks:item/player_passage_rod"
+    "layer0": "artisanalblocks:item/player_rod"
   }
 }

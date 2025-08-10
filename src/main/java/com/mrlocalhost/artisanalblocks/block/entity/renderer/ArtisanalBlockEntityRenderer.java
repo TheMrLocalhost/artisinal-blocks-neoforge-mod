@@ -4,8 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mrlocalhost.artisanalblocks.block.ModBlocks;
 import com.mrlocalhost.artisanalblocks.block.custom.ArtisanalBlock;
 import com.mrlocalhost.artisanalblocks.block.entity.ArtisanalBlockEntity;
+import com.mrlocalhost.artisanalblocks.item.ModItems;
 import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlocksConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -31,32 +33,40 @@ public class ArtisanalBlockEntityRenderer implements BlockEntityRenderer<Artisan
 
     @Override
     public void render(@NotNull ArtisanalBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+
+        LocalPlayer localPlayer = Minecraft.getInstance().player;
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
-        ArtisanalBlocksConstants.BLOCK_FACE_POS.forEach(direction -> {
-            ItemStack stack = blockEntity.inventory.getStackInSlot(direction.get3DDataValue());
-            if (stack.isEmpty()) {
-                stack = ModBlocks.ARTISANAL_BLOCK.toStack();
-            }
-
-            if (blockEntity.getLevel() != null) {
-                BlockPos sidePos = getRelativePosition(blockEntity.getBlockPos(), direction);
-                if (!(blockEntity.getLevel().getBlockState(sidePos).getBlock() instanceof ArtisanalBlock)) {
-                    poseStack.pushPose();
-                    Vec3 faceTranslations = getFaceTranslation(direction);
-                    poseStack.translate(faceTranslations.x, faceTranslations.y, faceTranslations.z); //set translation based on face being rendered
-                    Vec3 scales = getFaceScale(direction);
-                    poseStack.scale((float) scales.x, (float) scales.y, (float) scales.z);
-
-                    itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED,
-                            getLightLevel(blockEntity.getLevel(), sidePos),
-                            OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 1);
-                    poseStack.popPose();
+        if (localPlayer == null || !localPlayer.getMainHandItem().is(ModItems.ARTISANAL_CHISEL) || !localPlayer.isCrouching()) {
+            ArtisanalBlocksConstants.BLOCK_FACE_POS.forEach(direction -> {
+                ItemStack stack = blockEntity.inventory.getStackInSlot(direction.get3DDataValue());
+                if (stack.isEmpty()) {
+                    stack = ModBlocks.ARTISANAL_BLOCK.toStack();
                 }
-            }
-        });
+                if (blockEntity.getLevel() != null) {
+                    BlockPos sidePos = getRelativePosition(blockEntity.getBlockPos(), direction);
+                    if (!(blockEntity.getLevel().getBlockState(sidePos).getBlock() instanceof ArtisanalBlock)) {
+                        poseStack.pushPose();
+                        Vec3 faceTranslations = getFaceTranslation(direction);
+                        poseStack.translate(faceTranslations.x, faceTranslations.y, faceTranslations.z); //set translation based on face being rendered
+                        Vec3 scales = getFaceScale(direction);
+                        poseStack.scale((float) scales.x, (float) scales.y, (float) scales.z);
 
-
+                        itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED,
+                                getLightLevel(blockEntity.getLevel(), sidePos),
+                                OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 1);
+                        poseStack.popPose();
+                    }
+                }
+            });
+        } else { //render "outline"
+            poseStack.pushPose();
+            poseStack.scale(2.0F, 2.0F, 2.0F);
+            poseStack.translate(0.25F, 0.25F, 0.25F);
+            itemRenderer.renderStatic(ModBlocks.ARTISANAL_BLOCK.toStack(), ItemDisplayContext.FIXED, LightTexture.pack(15, 15),
+                OverlayTexture.RED_OVERLAY_V, poseStack, bufferSource, blockEntity.getLevel(), 1);
+            poseStack.popPose();
+        }
     }
 
     private int getLightLevel(Level level, BlockPos pos) {

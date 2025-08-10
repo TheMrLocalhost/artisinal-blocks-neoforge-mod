@@ -30,9 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-@SuppressWarnings("deprecation")
 public class EyedropperItem extends Item {
 
     public EyedropperItem(Properties properties) {
@@ -82,11 +80,11 @@ public class EyedropperItem extends Item {
         if (stack.has(DataComponents.CONTAINER)) itemStacks = stack.get(DataComponents.CONTAINER).stream().toList();
         for (Direction direction : ArtisanalBlocksConstants.BLOCK_FACE_POS) {
             String text = " - "+ StringUtils.capitalize(direction.getName())+"=";
-            if (itemStacks != null) {
-                String itemName = itemStacks.get(direction.get3DDataValue()).getDisplayName().getString();
+            if (itemStacks != null && (direction.get3DDataValue()/*2*/ < itemStacks.size()/*2*/)) {
+                String itemName = (itemStacks.get(direction.get3DDataValue()).is(Items.AIR)) ? "[]" : itemStacks.get(direction.get3DDataValue()).getDisplayName().getString();
                 text+=itemName.substring(1,itemName.length()-1);
             } else {
-                text+="Empty";
+                text+="";
             }
             components.add(Component.literal(text));
         }
@@ -97,7 +95,7 @@ public class EyedropperItem extends Item {
         for (DeferredHolder<DataComponentType<?>, ? extends DataComponentType<?>> component : ModDataComponentTypes.DATA_COMPONENT_TYPES.getEntries()) {
             return itemStack.has(component);
         }
-        return false;
+        return itemStack.has(DataComponents.CONTAINER);
     }
     private boolean hasBlocks(List<ItemStack> itemStacks) {
         for(ItemStack stack : itemStacks) {
@@ -106,20 +104,6 @@ public class EyedropperItem extends Item {
             }
         }
         return false;
-    }
-
-    private boolean doDataComponentsMatch(ItemStack stack1, ItemStack stack2) {
-        if (!hasAnyDataComponent(stack1) && !hasAnyDataComponent(stack2)) {
-            return true;
-        }
-        for (DeferredHolder<DataComponentType<?>, ? extends DataComponentType<?>> component : ModDataComponentTypes.DATA_COMPONENT_TYPES.getEntries()) {
-            if (stack1.has(component) ^ stack2.has(component)) { //XOR presence of component
-                return false;
-            } else if (!Objects.equals(stack1.get(component), stack2.get(component))) {
-                return false;
-            }
-        }
-        return true;
     }
 
     @Override
@@ -135,7 +119,6 @@ public class EyedropperItem extends Item {
         if (level.getBlockEntity(blockPos) instanceof ArtisanalBlockEntity artisanalBlockEntity) {
             if (!level.isClientSide()) {
                 if (player.isCrouching()) { //copy
-                    ItemStack initialItemStack = stack.copy();
                     int lightLevel = blockState.getValue(ArtisanalBlock.GLOW_VALUE);
                     if (lightLevel > 0) {
                         stack.set(ModDataComponentTypes.LIGHT_LEVEL, lightLevel);
@@ -178,14 +161,11 @@ public class EyedropperItem extends Item {
                     }
                     player.setItemInHand(hand, stack);
                     if (hasAnyDataComponent(stack)) {
-                        if (!doDataComponentsMatch(stack, initialItemStack)) {
-                            level.playSound(null, blockPos, SoundEvents.GENERIC_DRINK, SoundSource.BLOCKS, 0.5F, 0.75F);
-                        }
+                        player.playNotifySound(SoundEvents.GENERIC_DRINK, SoundSource.PLAYERS, 0.5F, 0.75F);
                     } else {
-                        level.playSound(null, blockPos, SoundEvents.CREEPER_DEATH, SoundSource.BLOCKS, 0.5F, 0.75F);
+                        player.playNotifySound(SoundEvents.CREEPER_DEATH, SoundSource.PLAYERS, 0.5F, 0.75F);
                     }
                 } else { //paste
-                    //set block information
                     if (stack.has(ModDataComponentTypes.LIGHT_LEVEL)) {
                         blockState = blockState.setValue(ArtisanalBlock.GLOW_VALUE, stack.get(ModDataComponentTypes.LIGHT_LEVEL));
                         level.setBlockAndUpdate(blockPos, blockState);
@@ -234,23 +214,32 @@ public class EyedropperItem extends Item {
                     }
                     level.setBlockEntity(artisanalBlockEntity);
                     ((ArtisanalBlock) level.getBlockState(blockPos).getBlock()).updateRedstoneStates(blockState, level, blockPos);
-                    level.playSound(null, blockPos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 0.5F, 0.75F);
+                    player.playNotifySound(SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 0.5F, 0.75F);
                 }
             }
 
             return InteractionResult.CONSUME;
         } else {
+            if (player.isCrouching()) {
+                clearEyedropperData(player, stack);
+                //player.setItemInHand(hand, stack);
+                return InteractionResult.CONSUME;
+            }
             return super.onItemUseFirst(stack, context);
         }
     }
 
     @Override //use on air
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (!player.isCrouching() || level.isClientSide || usedHand.equals(InteractionHand.OFF_HAND)) {
             return InteractionResultHolder.pass(itemStack);
         }
+        clearEyedropperData(player, itemStack);
+        return InteractionResultHolder.consume(itemStack);
+    }
 
+    private void clearEyedropperData(Player player, ItemStack itemStack) {
         if (itemStack.getItem().equals(ModItems.EYEDROPPER.get())) {
             boolean removedComponent = false;
             for (DeferredHolder<DataComponentType<?>, ? extends DataComponentType<?>> component : ModDataComponentTypes.DATA_COMPONENT_TYPES.getEntries()) {
@@ -264,11 +253,8 @@ public class EyedropperItem extends Item {
                 removedComponent = true;
             }
             if (removedComponent) {
-                level.playSound(null, player.getOnPos(), SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 0.5F, 1.0F);
+                player.playNotifySound(SoundEvents.BOTTLE_EMPTY, SoundSource.PLAYERS, 0.5F, 1.0F);
             }
         }
-
-
-        return InteractionResultHolder.consume(itemStack);
     }
 }

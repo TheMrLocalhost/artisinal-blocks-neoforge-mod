@@ -3,13 +3,15 @@
   "group": "artisanalblocks_artisanal_block",
   "category": "misc",
   "ingredients": [
-    ["minecraft:sand"],
-    ["minecraft:gravel"],
-    ["minecraft:bone_meal"],
-    ["minecraft:clay_ball"]
+    {"item": "minecraft:sand"},
+    {"tag":  "c:stones"},
+    {"item": "minecraft:bone_meal"},
+    {"item": "minecraft:clay_ball"},
+    {"item": "minecraft:redstone"},
+    {"item": "minecraft:glowstone_dust"}
   ],
   "result": {
     "id": "artisanalblocks:artisanal_block",
-    "count": 4
+    "count": 2
   }
 }

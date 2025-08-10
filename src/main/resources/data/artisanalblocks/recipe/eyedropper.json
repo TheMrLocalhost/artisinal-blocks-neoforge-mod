@@ -3,8 +3,8 @@
   "group": "artisanalblocks_eyedropper",
   "category": "misc",
   "key": {
-    "W": "#minecraft:wool",
-    "G": "minecraft:glass"
+    "W": {"tag": "minecraft:wool"},
+    "G": {"item": "minecraft:glass"}
   },
   "pattern": [
     " WW",

@@ -6,6 +6,7 @@ import com.mrlocalhost.artisanalblocks.block.custom.ArtisanalBlock;
 import com.mrlocalhost.artisanalblocks.networking.ArtisanalBlockNetworkData;
 import com.mrlocalhost.artisanalblocks.networking.handlers.ArtisanalBlockNetworkHandler;
 import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlockConfigs;
+import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlocksConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
@@ -33,10 +34,10 @@ public class ArtisanalBlockScreen extends AbstractContainerScreen<ArtisanalBlock
     private final ResourceLocation LIGHT_UP_HOVER_LOCATION = ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID,"widget/up_arrow_hover");
     private final ResourceLocation LIGHT_DOWN_HOVER_LOCATION = ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID,"widget/down_arrow_hover");
     private final ResourceLocation BLANK_BUTTON = ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID,"widget/blank_button");
-    private final ResourceLocation GLOWSTONE_ITEM = ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID,"widget/glowstone_dust");
-    private final ResourceLocation PLAYER_DUST_ITEM = ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID,"widget/player_passage_dust");
-    private final ResourceLocation PASSIVE_DUST_ITEM = ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID,"widget/passive_passage_dust");
-    private final ResourceLocation HOSTILE_DUST_ITEM = ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID,"widget/hostile_passage_dust");
+    private final ResourceLocation LIGHT_CONTROL = ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID,"widget/light_control");
+    private final ResourceLocation PLAYER_CONTROL = ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID,"widget/player_control");
+    private final ResourceLocation PASSIVE_CONTROL = ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID,"widget/passive_control");
+    private final ResourceLocation HOSTILE_CONTROL = ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID,"widget/hostile_control");
 
     private final ResourceLocation YELLOW_BOX = ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID,"textures/gui/sprites/yellow_box.png");
 
@@ -46,10 +47,10 @@ public class ArtisanalBlockScreen extends AbstractContainerScreen<ArtisanalBlock
     private final WidgetSprites LIGHT_UP_BUTTON_WIDGET = new WidgetSprites(LIGHT_UP_LOCATION, LIGHT_UP_HOVER_LOCATION);
     private final WidgetSprites LIGHT_DOWN_BUTTON_WIDGET = new WidgetSprites(LIGHT_DOWN_LOCATION, LIGHT_DOWN_HOVER_LOCATION);
     private final WidgetSprites BLANK_BUTTON_WIDGET = new WidgetSprites(BLANK_BUTTON, BLANK_BUTTON);
-    private final WidgetSprites GLOWSTONE_WIDGET = new WidgetSprites(GLOWSTONE_ITEM, GLOWSTONE_ITEM);
-    private final WidgetSprites PLAYER_DUST_WIDGET = new WidgetSprites(PLAYER_DUST_ITEM, PLAYER_DUST_ITEM);
-    private final WidgetSprites PASSIVE_DUST_WIDGET = new WidgetSprites(PASSIVE_DUST_ITEM, PASSIVE_DUST_ITEM);
-    private final WidgetSprites HOSTILE_DUST_WIDGET = new WidgetSprites(HOSTILE_DUST_ITEM, HOSTILE_DUST_ITEM);
+    private final WidgetSprites GLOWSTONE_WIDGET = new WidgetSprites(LIGHT_CONTROL, LIGHT_CONTROL);
+    private final WidgetSprites PLAYER_DUST_WIDGET = new WidgetSprites(PLAYER_CONTROL, PLAYER_CONTROL);
+    private final WidgetSprites PASSIVE_DUST_WIDGET = new WidgetSprites(PASSIVE_CONTROL, PASSIVE_CONTROL);
+    private final WidgetSprites HOSTILE_DUST_WIDGET = new WidgetSprites(HOSTILE_CONTROL, HOSTILE_CONTROL);
 
     private final Map<String, ArtisanalImageButton> CUSTOM_BUTTONS = new HashMap<>();
     private int lightLevelValue;
@@ -57,9 +58,6 @@ public class ArtisanalBlockScreen extends AbstractContainerScreen<ArtisanalBlock
             ResourceLocation.fromNamespaceAndPath(ArtisanalBlocks.MOD_ID, "textures/gui/artisanal_block/artisanal_block_gui.png");
 
     private final List<WidgetSprites> INITIAL_SCREEN_STATES = new ArrayList<>();
-
-    private final int MAX_LIGHT_LEVEL = 15;
-    private final int MIN_LIGHT_LEVEL = 0;
 
     public ArtisanalBlockScreen(ArtisanalBlockMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -186,32 +184,30 @@ public class ArtisanalBlockScreen extends AbstractContainerScreen<ArtisanalBlock
 
         CUSTOM_BUTTONS.put(ArtisanalBlockConfigs.BLOCK_OPTIONS.LIGHT.name(),
             new ArtisanalImageButton(col1, row1, 16, 16, INITIAL_SCREEN_STATES.get(0),
-        button -> { selectOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.LIGHT); }));
+        button -> selectOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.LIGHT)));
 
         CUSTOM_BUTTONS.put(ArtisanalBlockConfigs.BLOCK_OPTIONS.PLAYER_PASSAGE.name(),
             new ArtisanalImageButton(col1, row2, 16, 16, INITIAL_SCREEN_STATES.get(1),
-        button -> { selectOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.PLAYER_PASSAGE); }));
+        button -> selectOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.PLAYER_PASSAGE)));
 
         CUSTOM_BUTTONS.put(ArtisanalBlockConfigs.BLOCK_OPTIONS.PASSIVE_PASSAGE.name(),
             new ArtisanalImageButton(col3, row1, 16, 16, INITIAL_SCREEN_STATES.get(2),
-        button -> { selectOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.PASSIVE_PASSAGE); }));
+        button -> selectOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.PASSIVE_PASSAGE)));
 
         CUSTOM_BUTTONS.put(ArtisanalBlockConfigs.BLOCK_OPTIONS.HOSTILE_PASSAGE.name(),
             new ArtisanalImageButton(col3, row2, 16, 16, INITIAL_SCREEN_STATES.get(3),
-        button -> { selectOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.HOSTILE_PASSAGE); }));
+        button -> selectOption(ArtisanalBlockConfigs.BLOCK_OPTIONS.HOSTILE_PASSAGE)));
 
         CUSTOM_BUTTONS.put("LIGHT_UP",
             new ArtisanalImageButton(col3, lightLevelY, 16, 16, LIGHT_UP_BUTTON_WIDGET,
-        button -> { lightLevelButtonPressed(true);  }));
+        button -> lightLevelButtonPressed(true)));
         CUSTOM_BUTTONS.put("LIGHT_DOWN",
             new ArtisanalImageButton(col1, lightLevelY, 16, 16, LIGHT_DOWN_BUTTON_WIDGET,
-        button -> { lightLevelButtonPressed(false);  }));
+        button -> lightLevelButtonPressed(false)));
     }
 
     private void addButtons() {
-        this.CUSTOM_BUTTONS.forEach( (name, button) -> {
-            addRenderWidget(button);
-        });
+        this.CUSTOM_BUTTONS.forEach( (name, button) -> addRenderWidget(button));
     }
 
     private void swapButton(String name, ArtisanalImageButton originalButton, ArtisanalImageButton newButton) {
@@ -263,9 +259,9 @@ public class ArtisanalBlockScreen extends AbstractContainerScreen<ArtisanalBlock
     private void lightLevelButtonPressed(boolean isUp) {
         int oldLevel = lightLevelValue;
         if (isUp) {
-            lightLevelValue = (lightLevelValue == MAX_LIGHT_LEVEL) ? lightLevelValue : lightLevelValue +1;
+            lightLevelValue = (lightLevelValue == ArtisanalBlocksConstants.MAX_LIGHT_LEVEL) ? lightLevelValue : lightLevelValue +1;
         } else {
-            lightLevelValue = (lightLevelValue == MIN_LIGHT_LEVEL) ? lightLevelValue : lightLevelValue -1;
+            lightLevelValue = (lightLevelValue == ArtisanalBlocksConstants.MIN_LIGHT_LEVEL) ? lightLevelValue : lightLevelValue -1;
         }
         if (oldLevel != lightLevelValue) {
             PacketDistributor.sendToServer(new ArtisanalBlockNetworkData(menu.blockEntity.getBlockPos(), ArtisanalBlockNetworkHandler.LIGHT_LEVEL_CONFIG_FLAG, lightLevelValue));
@@ -277,13 +273,9 @@ public class ArtisanalBlockScreen extends AbstractContainerScreen<ArtisanalBlock
                 originalButton.getX(), originalButton.getY(),
                 originalButton.getWidth(), originalButton.getHeight(),
                 newSprite,
-                button -> {
-                    selectOption(config);
-                }
+                button -> selectOption(config)
         );
         CUSTOM_BUTTONS.replace(config.name(), newButton);
         swapButton(config.name(), originalButton, newButton);
-        //this.clearWidgets();
-        //this.addButtons();
     }
 }

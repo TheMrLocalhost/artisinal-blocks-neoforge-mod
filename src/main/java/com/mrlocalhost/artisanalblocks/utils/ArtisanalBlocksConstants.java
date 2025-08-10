@@ -41,4 +41,7 @@ public class ArtisanalBlocksConstants {
         entry(ArtisanalBlockConfigs.BLOCK_OPTIONS.HOSTILE_PASSAGE, ArtisanalBlock.HOSTILE_PASSIBLE)
     );
 
+    public static final int MAX_LIGHT_LEVEL = 15;
+    public static final int MIN_LIGHT_LEVEL = 0;
+
 }

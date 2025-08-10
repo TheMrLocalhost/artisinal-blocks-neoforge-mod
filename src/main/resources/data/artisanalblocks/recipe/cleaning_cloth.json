@@ -3,8 +3,8 @@
   "group": "artisanalblocks_cleaning_cloth",
   "category": "misc",
   "key": {
-    "P": "minecraft:paper",
-    "W": "#minecraft:wool"
+    "P": {"item": "minecraft:paper"},
+    "W": {"tag": "minecraft:wool"}
   },
   "pattern": [
     "PPP",

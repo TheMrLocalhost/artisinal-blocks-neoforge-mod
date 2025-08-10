@@ -21,9 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.core.BlockPos;
 
 import java.util.List;
-import java.util.function.Consumer;
 
-@SuppressWarnings("deprecation")
 public class CleaningClothItem extends Item {
 
     public CleaningClothItem(Properties properties) {
@@ -57,7 +55,7 @@ public class CleaningClothItem extends Item {
             if (level.getBlockEntity(blockPos) instanceof ArtisanalBlockEntity artisanalBlockEntity) {
                 artisanalBlockEntity.drops(); //clear slots
             }
-            level.playSound(null, blockPos, SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS);
+            player.playNotifySound(SoundEvents.GRINDSTONE_USE, SoundSource.PLAYERS, 0.5F, 1.0F);
         } else {
             return super.onItemUseFirst(stack, context);
         }

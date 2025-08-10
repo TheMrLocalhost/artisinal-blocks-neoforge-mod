@@ -24,24 +24,24 @@ public class ModItems {
         ITEMS.registerItem("cleaning_cloth", CleaningClothItem::new, new Item.Properties()
             .stacksTo(1));
 
-    public static final DeferredItem<Item> PLAYER_PASSAGE_DUST =
-            ITEMS.registerItem("player_passage_dust", Item::new, new Item.Properties()
+    public static final DeferredItem<Item> PLAYER_DUST =
+            ITEMS.registerItem("player_dust", Item::new, new Item.Properties()
                     .stacksTo(64));
-    public static final DeferredItem<Item> PASSIVE_PASSAGE_DUST =
-            ITEMS.registerItem("passive_passage_dust", Item::new, new Item.Properties()
+    public static final DeferredItem<Item> PASSIVE_DUST =
+            ITEMS.registerItem("passive_dust", Item::new, new Item.Properties()
                     .stacksTo(64));
-    public static final DeferredItem<Item> HOSTILE_PASSAGE_DUST =
-            ITEMS.registerItem("hostile_passage_dust", Item::new, new Item.Properties()
+    public static final DeferredItem<Item> HOSTILE_DUST =
+            ITEMS.registerItem("hostile_dust", Item::new, new Item.Properties()
                     .stacksTo(64));
 
-    public static final DeferredItem<Item> PLAYER_PASSAGE_ROD =
-        ITEMS.registerItem("player_passage_rod", PlayerPassageRodItem::new, new Item.Properties()
+    public static final DeferredItem<Item> PLAYER_ROD =
+        ITEMS.registerItem("player_rod", PlayerRodItem::new, new Item.Properties()
             .stacksTo(1));
-    public static final DeferredItem<Item> PASSIVE_PASSAGE_ROD =
-        ITEMS.registerItem("passive_passage_rod", PassivePassageRodItem::new, new Item.Properties()
+    public static final DeferredItem<Item> PASSIVE_ROD =
+        ITEMS.registerItem("passive_rod", PassiveRodItem::new, new Item.Properties()
             .stacksTo(1));
-    public static final DeferredItem<Item> HOSTILE_PASSAGE_ROD =
-        ITEMS.registerItem("hostile_passage_rod", HostilePassageRodItem::new, new Item.Properties()
+    public static final DeferredItem<Item> HOSTILE_ROD =
+        ITEMS.registerItem("hostile_rod", HostileRodItem::new, new Item.Properties()
             .stacksTo(1));
     public static final DeferredItem<Item> LIGHTING_ROD =
         ITEMS.registerItem("lighting_rod", LightingRodItem::new, new Item.Properties()
@@ -55,7 +55,18 @@ public class ModItems {
         ITEMS.registerItem("eyedropper", EyedropperItem::new, new Item.Properties()
             .stacksTo(1));
 
-    //TODO ADD EYEDROPPER
+    public static final DeferredItem<Item> GLOWSTONE_GEM =
+        ITEMS.registerItem("glowstone_gem", Item::new, new Item.Properties()
+                .stacksTo(64));
+    public static final DeferredItem<Item> PLAYER_GEM =
+        ITEMS.registerItem("player_gem", Item::new, new Item.Properties()
+                .stacksTo(64));
+    public static final DeferredItem<Item> PASSIVE_GEM =
+        ITEMS.registerItem("passive_gem", Item::new, new Item.Properties()
+                .stacksTo(64));
+    public static final DeferredItem<Item> HOSTILE_GEM =
+        ITEMS.registerItem("hostile_gem", Item::new, new Item.Properties()
+                .stacksTo(64));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

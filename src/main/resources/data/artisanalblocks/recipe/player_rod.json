@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
-  "group": "artisanalblocks_lighting_rod",
+  "group": "artisanalblocks_player_rod",
   "category": "misc",
   "key": {
     "S": {"tag": "c:rods/wooden"},
-    "G": {"item": "artisanalblocks:glowstone_gem"},
+    "D": {"item": "artisanalblocks:player_gem"},
     "C": {"item": "minecraft:diamond"}
   },
   "pattern": [
-    "CG",
+    "CD",
     "SC"
   ],
   "result": {
-    "id": "artisanalblocks:lighting_rod"
+    "id": "artisanalblocks:player_rod"
   }
 }

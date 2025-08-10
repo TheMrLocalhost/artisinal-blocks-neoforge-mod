@@ -2,6 +2,7 @@ package com.mrlocalhost.artisanalblocks.item.custom;
 
 import com.mrlocalhost.artisanalblocks.block.custom.ArtisanalBlock;
 import com.mrlocalhost.artisanalblocks.block.entity.ArtisanalBlockEntity;
+import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlockConfigs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -20,10 +21,9 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
-@SuppressWarnings("deprecation")
-public class PlayerPassageRodItem extends Item {
+public class PlayerRodItem extends Item {
 
-    public PlayerPassageRodItem(Properties properties) {
+    public PlayerRodItem(Properties properties) {
         super(properties);
     }
 
@@ -31,11 +31,11 @@ public class PlayerPassageRodItem extends Item {
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
     @NotNull List<Component> tooltipAdder, @NotNull TooltipFlag tooltipFlag) {
         if (Screen.hasShiftDown()) {
-            tooltipAdder.add(Component.translatable("tooltip.artisanalblocks.player_passage_rod_item.shift_down_1").withStyle(ChatFormatting.AQUA));
-            tooltipAdder.add(Component.translatable("tooltip.artisanalblocks.player_passage_rod_item.shift_down_2").withStyle(ChatFormatting.AQUA));
-            tooltipAdder.add(Component.translatable("tooltip.artisanalblocks.player_passage_rod_item.shift_down_3").withStyle(ChatFormatting.RED));
+            tooltipAdder.add(Component.translatable("tooltip.artisanalblocks.player_rod_item.shift_down_1").withStyle(ChatFormatting.AQUA));
+            tooltipAdder.add(Component.translatable("tooltip.artisanalblocks.player_rod_item.shift_down_2").withStyle(ChatFormatting.AQUA));
+            tooltipAdder.add(Component.translatable("tooltip.artisanalblocks.player_rod_item.shift_down_3").withStyle(ChatFormatting.RED));
         } else {
-            tooltipAdder.add(Component.translatable("tooltip.artisanalblocks.player_passage_rod_item").withStyle(ChatFormatting.YELLOW));
+            tooltipAdder.add(Component.translatable("tooltip.artisanalblocks.player_rod_item").withStyle(ChatFormatting.YELLOW));
         }
     }
 
@@ -51,13 +51,18 @@ public class PlayerPassageRodItem extends Item {
         }
 
         if (!(level instanceof ServerLevel)) {
-            if (level.getBlockEntity(blockPos) instanceof ArtisanalBlockEntity) {
-                if (!player.isCrouching()) {
-                    player.displayClientMessage(Component.translatable("client_message.pop_up.artisanalblocks.player_passible.true").withStyle(ChatFormatting.GREEN), true);
-                    player.playNotifySound(SoundEvents.LEVER_CLICK, SoundSource.PLAYERS, 0.25F, 1.0F);
+            if (level.getBlockEntity(blockPos) instanceof ArtisanalBlockEntity artisanalBlockEntity) {
+                if (artisanalBlockEntity.getBlockConfig(ArtisanalBlockConfigs.BLOCK_OPTIONS.PLAYER_PASSAGE).equals(ArtisanalBlockConfigs.REDSTONE_OPTIONS.IGNORED)) {
+                    if (!player.isCrouching()) {
+                        player.displayClientMessage(Component.translatable("client_message.pop_up.artisanalblocks.player_passible.true").withStyle(ChatFormatting.GREEN), true);
+                        player.playNotifySound(SoundEvents.LEVER_CLICK, SoundSource.PLAYERS, 0.25F, 1.0F);
+                    } else {
+                        player.displayClientMessage(Component.translatable("client_message.pop_up.artisanalblocks.player_passible.false").withStyle(ChatFormatting.RED), true);
+                        player.playNotifySound(SoundEvents.LEVER_CLICK, SoundSource.PLAYERS, 0.25F, 0.5F);
+                    }
                 } else {
-                    player.displayClientMessage(Component.translatable("client_message.pop_up.artisanalblocks.player_passible.false").withStyle(ChatFormatting.RED), true);
-                    player.playNotifySound(SoundEvents.LEVER_CLICK, SoundSource.PLAYERS, 0.25F, 0.5F);
+                    player.displayClientMessage(Component.translatable("client_message.pop_up.artisanalblocks.redstone_controlled").withStyle(ChatFormatting.RED), true);
+                    player.playNotifySound(SoundEvents.REDSTONE_TORCH_BURNOUT, SoundSource.PLAYERS, 0.25F, 0.5F);
                 }
                 return InteractionResult.SUCCESS;
             }

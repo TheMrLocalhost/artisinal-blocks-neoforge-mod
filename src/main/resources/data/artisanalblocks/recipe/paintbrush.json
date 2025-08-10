@@ -3,8 +3,8 @@
   "group": "artisanalblocks_paintbrush",
   "category": "misc",
   "key": {
-    "S": "minecraft:stick",
-    "C": "artisanalblocks:cleaning_cloth"
+    "S": {"tag": "c:rods/wooden"},
+    "C": {"item": "artisanalblocks:cleaning_cloth"}
   },
   "pattern": [
     "  C",

@@ -1,5 +1,6 @@
 package com.mrlocalhost.artisanalblocks.block.entity;
 
+import com.mrlocalhost.artisanalblocks.item.ModItems;
 import com.mrlocalhost.artisanalblocks.screen.custom.ArtisanalBlockMenu;
 import com.mrlocalhost.artisanalblocks.utils.ArtisanalBlockConfigs;
 import net.minecraft.core.BlockPos;
@@ -95,6 +96,11 @@ public class ArtisanalBlockEntity extends BlockEntity implements MenuProvider {
         if (tag.contains("block_config")) {
             blockConfig.deserializeNBT(registries, tag.getCompound("block_config"));
         }
+    }
+
+    @Override
+    public boolean hasCustomOutlineRendering(@NotNull Player player) {
+        return player.getMainHandItem().is(ModItems.ARTISANAL_CHISEL);
     }
 
     @Override

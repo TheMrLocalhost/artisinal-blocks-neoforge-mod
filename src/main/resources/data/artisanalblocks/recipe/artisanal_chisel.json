@@ -3,12 +3,12 @@
   "group": "artisanalblocks_artisanal_chisel",
   "category": "misc",
   "key": {
-    "N": "minecraft:netherite_block",
-    "D": "minecraft:diamond_block",
-    "S": "minecraft:stick",
-    "L": "artisanalblocks:player_passage_dust",
-    "P": "artisanalblocks:passive_passage_dust",
-    "H": "artisanalblocks:hostile_passage_dust"
+    "N": {"item": "minecraft:netherite_block"},
+    "D": {"item": "minecraft:diamond_block"},
+    "S": {"tag": "c:rods/wooden"},
+    "L": {"item": "artisanalblocks:player_gem"},
+    "P": {"item": "artisanalblocks:passive_gem"},
+    "H": {"item": "artisanalblocks:hostile_gem"}
   },
   "pattern": [
     " DN",
